@@ -3,20 +3,23 @@ import './generator.css';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 class Generator extends React.Component {
   constructor(props) {
-    super();
+    super(props);
+    // fnx for generating password
     this.generate = this.generate.bind(this);
+    // fnx for native react-copy-to-clipboard
     this.onCopy = this.onCopy.bind(this);
-    this.passwordRef = React.createRef();
+    // popup Ref
     this.popupRef = React.createRef();
+    // State
     this.state = {
       result: '',
+      copied: false,
     }
   };
 
   // React-Copy-to-Clipboard
   onCopy = () => {
-    // Declaring refs
-    let coppied = this.passwordRef.current.innerText;
+    // Declaring ref
     let poppupElement = this.popupRef.current;
     // Toogle copy
     this.setState({... {copied: true} });
@@ -27,12 +30,11 @@ class Generator extends React.Component {
     }
     // Timeout for hidding popup
     setTimeout(hidden, 500);
-    console.log(this.state);
+    console.log('Password coppied');
   };
 
   // Function which generate password
   generate = () => {
-    console.log(this.state);
     // All expected characters
     let characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+~`|}{[]:;?><,./-=';
     let password = [];
@@ -47,7 +49,7 @@ class Generator extends React.Component {
     password = password.join('');
     // Setting state with new password
     this.setState({ result: password, });
-    console.log('Password created: ', password );
+    console.log('Created: ', password );
   };
 
   render() {
