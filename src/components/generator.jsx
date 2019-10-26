@@ -7,6 +7,7 @@ class Generator extends React.Component {
     this.generate = this.generate.bind(this)
     this.copy = this.copy.bind(this)
     this.passwordRef = React.createRef();
+    this.popupRef = React.createRef();
     this.state = {
       lib: '',
       clipboard: '',
@@ -21,9 +22,16 @@ class Generator extends React.Component {
     });
   };
 
-  // Function which
+  // Function which coppies new password to the buffer
   copy = () => {
-    let coppied = this.passwordRef.current.innerText
+    let coppied = this.passwordRef.current.innerText;
+    let poppupElement = this.popupRef.current;
+    // Showing popup on 1000 ms
+    poppupElement.classList.add('active');
+    const hidden = () => {
+      poppupElement.classList.remove('active');
+    }
+    setTimeout(hidden, 1000);
     this.setState({ clipboard:coppied });
     this.updateClipboard(coppied);
   };
@@ -50,6 +58,9 @@ class Generator extends React.Component {
   render() {
     return(
       <div className="generator">
+        <div className="popup" ref={this.popupRef} >
+          <h1>Coppied!</h1>
+        </div>
         <div className="info">
           <object className="logo" data={this.props.image} type="image/svg+xml"></object>
           <p>New Password: <code className="result" ref={this.passwordRef}>{this.state.result}</code> </p>
