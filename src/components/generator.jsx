@@ -52,7 +52,7 @@ class Generator extends React.Component {
       <div className="generator">
         <div className="info">
           <object className="logo" data={this.props.image} type="image/svg+xml"></object>
-          <p>New Password: <code className="result" ref={this.passwordRef}> {this.state.result} </code> </p>
+          <p>New Password: <code className="result" ref={this.passwordRef}>{this.state.result}</code> </p>
         </div>
         <div className="buttons">
           <button className="gen" onClick={ () => { this.generate();} } >Generate password</button>
