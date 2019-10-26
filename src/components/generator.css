@@ -1,7 +1,7 @@
 .generator{
   margin: 10px auto;
   padding: 20px 10px;
-  width: 376px;
+  width: 300px;
   background-color: whitesmoke;
   border-radius: 25px;
   display: flex;
@@ -30,14 +30,23 @@
 .info{
   display: flex;
   justify-content: flex-start;
+  align-items: flex-end;
+  width: 100%;
 }
 .logo{
   padding: 0 10px;
+  margin: 0 0 16px 0;
+}
+.text {
+  width: 90%;
+  display: flex;
+  flex-direction: column;
 }
 .result{
   color: red;
   padding: 5px 10px;
-  margin-left: 10px;
+  height: 19px;
+  margin: 10px 0 0 10px;
   border-radius: 25px;
   font-weight: bold;
   background-color: lightsteelblue;
