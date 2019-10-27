@@ -1,1 +1,11 @@
-asdasdasdasdasd
+.sign-in {
+  width: 320px;
+  height: 280px;
+  position: absolute;
+  top: 65px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: lightskyblue;
+  z-index: 1;
+  border-radius: 25px;
+}

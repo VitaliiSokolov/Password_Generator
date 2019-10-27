@@ -1,5 +1,5 @@
 .generator{
-  margin: 10px auto;
+  margin: 80px auto 10px;
   padding: 20px 10px;
   width: 300px;
   background-color: whitesmoke;
@@ -9,6 +9,7 @@
   align-items: center;
   justify-content: flex-start;
   position: relative;
+  z-index: 2;
 }
 .popup{
   position: absolute;
@@ -32,10 +33,6 @@
   justify-content: flex-start;
   align-items: flex-end;
   width: 100%;
-}
-.logo{
-  padding: 0 10px;
-  margin: 0 0 16px 0;
 }
 .text {
   width: 90%;
