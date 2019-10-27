@@ -46,7 +46,7 @@ class Generator extends React.Component {
           <h1>Coppied!</h1>
         </div>
         <div className="info">
-          <object className="logo" data={this.props.image} type="image/svg+xml"></object>
+          {/* <object className="logo" data={this.props.image} type="image/svg+xml"></object> */}
           <p className="text">New Password: <code className="result" ref={this.passwordRef}>{this.state.result}</code> </p>
         </div>
         <div className="buttons">
@@ -58,7 +58,7 @@ class Generator extends React.Component {
         <input className="check" type="text" placeholder="Check Your Result: " />
       </div>
     );
-  }
+  };
 }
 
 export default Generator;
