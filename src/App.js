@@ -3,6 +3,7 @@ import './App.css';
 import logo from './vs.svg';
 import Generator from './components/generator';
 import SignIn from './components/sign-in';
+const axios = require('axios');
 
 class App extends React.Component {
   constructor(props) {
@@ -13,27 +14,16 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    // Call our fetch function below once the component mounts
     this.callBackendAPI()
-      .then( (res) => {
-        // console.log(res);
-        // this.setState({ data: res.express });
-      })
-      .catch(err => console.log(err));
-      // console.log(this.state);
+      .then( (res) => { this.setState({ data: res.express }); })
+      .catch( (err) => console.log(err) );
   }
-  // Fetches our GET route from the Express server. (Note the route we are fetching matches the GET route from server.js
+
   callBackendAPI = async () => {
-    const response = await fetch('/');
-    console.log(response);
-
-    const body = await response.body;
-    console.log(body);
-
-    // if (response.status !== 200) {
-    //   throw Error(body.message)
-    // }
-    return body;
+    let res = await axios.get('/xxx')
+    .then( (response) => { return response.data } )
+    .catch( (err) => console.log(err) );
+    return res;
   };
 
   render() {

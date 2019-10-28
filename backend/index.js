@@ -1,14 +1,6 @@
 var express = require('express');
 var app = express();
-
-// app.get('/', function (req, res) {
-//   res.send('Hello World!');
-// });
-
-// app.listen(3001, function () {
-//   console.log('Example app listening on port 3001!');
-// });
-
+var router = express.Router();
 
 const port = process.env.PORT || 5000;
 
@@ -16,9 +8,10 @@ const port = process.env.PORT || 5000;
 app.listen(port, () => console.log(`Listening on port ${port}`));
 
 // create a GET route
-app.get('/', (req, res) => {
+app.get('/xxx', (req, res) => {
   res.send(
-    // { express: 'YOUR EXPRESS BACKEND IS CONNECTED TO REACT' }
-    'hello'
+    { express : 'YOUR EXPRESS BACKEND IS CONNECTED TO REACT' }
   );
 });
+
+module.exports = app;
