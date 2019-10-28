@@ -4,6 +4,10 @@
   width: 320px;
   margin: 0 auto;
 }
+a{
+  text-decoration: none;
+  color: #000;
+}
 .header {
   display: flex;
   justify-content: flex-start;
@@ -13,4 +17,10 @@
 }
 .logo {
   margin-right: 12px;
+}
+.log-button {
+  text-decoration: none;
+  color: #000;
+  background-color: lightyellow;
+  display: inline;
 }
