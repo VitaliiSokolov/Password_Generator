@@ -9,13 +9,13 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: null
+      userName: null
     };
   }
 
   componentDidMount() {
     this.callBackendAPI()
-      .then( (res) => { this.setState({ data: res.express }); })
+      .then( (res) => { this.setState({ userName: res.user }); })
       .catch( (err) => console.log(err) );
   }
 
@@ -27,13 +27,14 @@ class App extends React.Component {
   };
 
   render() {
+    const { userName } = this.state;
     return (
       <div className="App">
         <div className="header">
           <object className="logo" data={logo} type="image/svg+xml"></object>
           <h3> Password Generator </h3>
         </div>
-        <SignIn />
+        <SignIn name={userName}/>
         <Generator image={logo}/>
       </div>
     );

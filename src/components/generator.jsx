@@ -15,16 +15,16 @@ class Generator extends React.Component {
   // React-Copy-to-Clipboard
   onCopy = () => {
     let poppupElement = this.popupRef.current;
-    this.setState({... {copied: true} });
+    this.setState({copied: true});
     poppupElement.classList.add('active');
     const hidden = () => {
       poppupElement.classList.remove('active');
     }
-    // Timeout for hidding popup
+    // Hidding popup
     setTimeout(hidden, 500);
     console.log('Password coppied');
   };
-  // Function which generate password
+  // Generating password
   generate = () => {
     let characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+~`|}{[]:;?><,./-=';
     let password = [];
@@ -39,7 +39,9 @@ class Generator extends React.Component {
     this.setState({ result: password, });
     console.log('Created: ', password );
   };
+
   render() {
+    const { result,  } = this.state;
     return(
       <div className="generator">
         <div className="popup" ref={this.popupRef} >
@@ -47,11 +49,11 @@ class Generator extends React.Component {
         </div>
         <div className="info">
           {/* <object className="logo" data={this.props.image} type="image/svg+xml"></object> */}
-          <p className="text">New Password: <code className="result" ref={this.passwordRef}>{this.state.result}</code> </p>
+          <p className="text">New Password: <code className="result" ref={this.passwordRef}>{result}</code> </p>
         </div>
         <div className="buttons">
           <button className="gen" onClick={ () => { this.generate();} } >Generate password</button>
-          <CopyToClipboard onCopy={this.onCopy} text={this.state.result} >
+          <CopyToClipboard onCopy={this.onCopy} text={result} >
             <button className="copy" >Copy to clipboard</button>
           </CopyToClipboard>
         </div>
