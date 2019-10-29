@@ -46,20 +46,19 @@ app.post('/login', (req, res) => {
     if (username == user.username && password == user.password /* Use your password hash checking logic here !*/) {
       //If all credentials are correct do this
       let token = jwt.sign({ id: user.id, username: user.username }, 'keyboard cat 4 ever', { expiresIn: 129600 }); // Sigining the token
-      res.send({
+      res.json({
         sucess: true,
         err: null,
         token
       });
       break;
+    } else {
+      res.status(401).json({
+        sucess: false,
+        token: null,
+        err: 'Username or password is incorrect'
+      });
     }
-    // else {
-    //   res.status(401).json({
-    //     sucess: false,
-    //     token: null,
-    //     err: 'Username or password is incorrect'
-    //   });
-    // }
   }
 });
 

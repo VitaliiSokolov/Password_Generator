@@ -6,41 +6,36 @@ class SignIn extends React.Component {
   constructor(props) {
     super(props);
     this.callBackendAPI = this.callBackendAPI.bind(this);
-    this.callBackendAPIGet = this.callBackendAPI.bind(this);
+    this.handleOnChangeUser = this.handleOnChangeUser.bind(this);
+    this.handleOnChangePass = this.handleOnChangePass.bind(this);
+    this.userNameRef =  React.createRef();
     this.state = {
-      name: 'Vasyl'
-    }
-  }
-
-  componentDidMount() {
-    // Future data-handler
-    // .then( (res) => { this.setState({ userName: res.user }); })
-    this.callBackendAPI()
-      .then( (res) => { console.log('Server response: ',res); })
-      .catch( (err) => console.log(err) );
-
-    this.callBackendAPIGet()
-      .then( (res) => {
-        let data = res.config.data;
-        data = JSON.parse(data);
-        this.setState({ name: data.username });
-        return data;
-      })
-      .catch( (err) => console.log(err) );
+      name: 'Shadow',
+      login: 'vetal',
+      password: '3513',
+    };
   }
 
   callBackendAPI = async () => {
-    let res = await axios.post('/login', { username: 'guest', password: '3513' } )
-      .then( (response) => { return response; } )
-      .catch( (err) => console.log(err) );
+    const { login, password} = this.state;
+    let res = await axios.post('/login', { username: login, password: password } )
+      .then( (res) => {
+        console.log(res);
+        let data = res.config.data;
+        data = JSON.parse(data);
+        this.setState({ name: data.username });
+        return;
+      })
+      .catch((err) => { return err; });
     return res;
   };
 
-  callBackendAPIGet = async () => {
-    let res = await axios.get('/login')
-      .then( (response) => { console.log(response); } )
-      .catch( (err) => console.log(err) );
-    return res;
+  handleOnChangeUser = (e) => {
+    this.setState({login: e});
+  }
+
+  handleOnChangePass = (e) => {
+    this.setState({password: e});
   }
 
   render() {
@@ -50,12 +45,23 @@ class SignIn extends React.Component {
         <h1> Hello {name} </h1>
         <form className='register' action='/login' method='post'>
           <label>Login</label>
-          <input className='reg-input' type='text' name='userName' />
+          <input
+            className='reg-input'
+            type='text'
+            name='userName'
+            ref={this.userNameRef}
+            onChange={ (e)=> {this.handleOnChangeUser(e.target.value);} }
+          />
 
           <label>Password</label>
-          <input className='reg-input' type='text' name='userMainPassword' />
+          <input
+            className='reg-input'
+            type='text'
+            name='userMainPassword'
+            onChange={ (e)=> {this.handleOnChangePass(e.target.value);} }
+          />
 
-          <input className='reg-button' type='submit' value='Sign In' />
+          <button className='reg-button' onClick={ () => {this.callBackendAPI();} } >Login</button>
         </form>
       </div>
     );
