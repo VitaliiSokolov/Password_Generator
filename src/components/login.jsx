@@ -15,9 +15,6 @@ class SignIn extends React.Component {
           <label>Login</label>
           <input className='reg-input' type='text' name='userName' />
 
-          <label>Email</label>
-          <input className='reg-input' type='text' name='userEmail' />
-
           <label>Password</label>
           <input className='reg-input' type='text' name='userMainPassword' />
 
