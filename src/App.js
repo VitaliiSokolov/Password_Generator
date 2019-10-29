@@ -1,7 +1,7 @@
 import React from 'react';
 import {
   BrowserRouter as Router,
-  Switch,
+  // Switch,
   Route,
   Link,
 } from "react-router-dom";
@@ -40,7 +40,7 @@ class App extends React.Component {
     return (
       <div className="App">
         <div className="header">
-          <object className="logo" data={logo} type="image/svg+xml"></object>
+          <svg className="logo" data={logo} type="image/svg+xml" alt="VS"></svg>
           <a href="/home">
             <h3> Password Generator </h3>
           </a>

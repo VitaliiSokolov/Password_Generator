@@ -49,7 +49,6 @@ class Generator extends React.Component {
           <h1>Coppied!</h1>
         </div>
         <div className="info">
-          {/* <object className="logo" data={this.props.image} type="image/svg+xml"></object> */}
           <h1> Hello {name} </h1>
           <p className="text">New Password: <code className="result" ref={this.passwordRef}>{result}</code> </p>
         </div>

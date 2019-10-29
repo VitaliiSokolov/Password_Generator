@@ -2,7 +2,7 @@ var express = require('express');
 const bodyParser = require("body-parser");
 
 var app = express();
-var router = express.Router();
+// var router = express.Router();
 
 const port = process.env.PORT || 5000;
 // создаем парсер для данных application/x-www-form-urlencoded
