@@ -1,5 +1,5 @@
 var express = require('express');
-const bodyParser = require("body-parser");
+const bodyParser = require('body-parser');
 
 var app = express();
 // var router = express.Router();
@@ -16,7 +16,7 @@ app.get('/generator', urlencodedParser, (req, res) => {
   );
 });
 
-app.post("/register", urlencodedParser, function (request, response) {
+app.post('/register', urlencodedParser, function (request, response) {
   if(!request.body) return response.sendStatus(400);
   console.log(request.body);
   response.send(`<h1>${request.body.userName}</h1> <h1>${request.body.userEmail}</h1>  <h1>${request.body.userMainPassword}</h1>`);
