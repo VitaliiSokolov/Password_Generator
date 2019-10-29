@@ -12,7 +12,6 @@ import Generator from './components/generator';
 import SignIn from './components/sign-in';
 import Login from './components/login';
 import Error from './components/error';
-const axios = require('axios');
 
 class App extends React.Component {
   constructor(props) {
@@ -21,35 +20,6 @@ class App extends React.Component {
       userName: null
     };
   }
-
-  componentDidMount() {
-    this.callBackendAPI()
-      // Future data-handler
-      // .then( (res) => { this.setState({ userName: res.user }); })
-      .then( (res) => { console.log(res); })
-      .catch( (err) => console.log(err) );
-  }
-
-  callBackendAPI = async () => {
-    let res = await axios.post('/login', {
-      headers: {
-        // 'accept': 'application/json',
-        // 'accept-language': 'en_US',
-        'content-type': 'application/x-www-form-urlencoded'
-      },
-      auth: {
-        username: 'vetal',
-        password: '3513'
-      },
-      body: {
-        username: 'vetal',
-        password: '3513'
-      }
-    })
-      .then( (response) => { return console.log(response); } )
-      .catch( (err) => console.log(err) );
-    return res;
-  };
 
   render() {
     const { userName } = this.state;
