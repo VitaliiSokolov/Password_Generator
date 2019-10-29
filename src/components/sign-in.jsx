@@ -11,7 +11,7 @@ class SignIn extends React.Component {
     return(
       <div className='sign-in'>
         <h1> Hello {name} </h1>
-        <form className='register' action='/xxx' method='post'>
+        <form className='register' action='/login' method='post'>
           <label>Login</label>
           <input className='reg-input' type='text' name='userName' />
 

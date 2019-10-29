@@ -24,15 +24,30 @@ class App extends React.Component {
 
   componentDidMount() {
     this.callBackendAPI()
-      .then( (res) => { this.setState({ userName: res.user }); })
+      // Future data-handler
+      // .then( (res) => { this.setState({ userName: res.user }); })
+      .then( (res) => { console.log(res); })
       .catch( (err) => console.log(err) );
   }
 
   callBackendAPI = async () => {
-    let res = await axios.get('/generator')
-      .then( (response) => { return response.data; } )
+    let res = await axios.post('/login', {
+      headers: {
+        // 'accept': 'application/json',
+        // 'accept-language': 'en_US',
+        'content-type': 'application/x-www-form-urlencoded'
+      },
+      auth: {
+        username: 'vetal',
+        password: '3513'
+      },
+      body: {
+        username: 'vetal',
+        password: '3513'
+      }
+    })
+      .then( (response) => { return console.log(response); } )
       .catch( (err) => console.log(err) );
-    console.log('response data', res);
     return res;
   };
 
@@ -71,11 +86,8 @@ class App extends React.Component {
             <Generator name={userName} image={logo}/>
           </Route>
 
-          <Route path='*'>
-            <Error/>
-          </Route>
+          {/* <Route path='*' component={Error} /> */}
         </Router>
-
       </div>
     );
   }
