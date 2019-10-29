@@ -11,6 +11,7 @@ import logo from './vs.svg';
 import Generator from './components/generator';
 import SignIn from './components/sign-in';
 import Login from './components/login';
+import Error from './components/error';
 const axios = require('axios');
 
 class App extends React.Component {
@@ -40,14 +41,13 @@ class App extends React.Component {
     return (
       <div className='App'>
         <div className='header'>
-          <svg className='logo' data={logo} type='image/svg+xml' alt='VS'></svg>
+          <object className='logo' data={logo} type='image/svg+xml' alt='VS'></object>
           <a href='/home'>
             <h3> Password Generator </h3>
           </a>
         </div>
 
         <Router >
-
           <Route exact path='/' render={() => (<Redirect to='/home' />)} />
 
           <Route path='/home'>
@@ -60,17 +60,20 @@ class App extends React.Component {
           </Route>
 
           <Route path='/register'>
-            <SignIn />
+            <SignIn name={userName}/>
           </Route>
 
           <Route path='/login'>
-            <Login />
+            <Login name={userName}/>
           </Route>
 
-          <Route path='/generator'>
+          <Route path='/gen'>
             <Generator name={userName} image={logo}/>
           </Route>
 
+          <Route path='*'>
+            <Error/>
+          </Route>
         </Router>
 
       </div>
