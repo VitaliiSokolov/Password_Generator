@@ -10,7 +10,7 @@ const urlencodedParser = bodyParser.urlencoded({extended: false});
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
 
-app.get('/login', urlencodedParser, (req, res) => {
+app.get('/generator', urlencodedParser, (req, res) => {
   res.send(
     { user : 'User (^_^)' }
   );

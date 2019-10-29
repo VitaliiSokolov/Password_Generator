@@ -3,14 +3,15 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
+  Link,
 } from "react-router-dom";
+import { Redirect } from 'react-router'
 import './App.css';
 import logo from './vs.svg';
 import Generator from './components/generator';
 import SignIn from './components/sign-in';
+import Login from './components/login';
 const axios = require('axios');
-
 
 class App extends React.Component {
   constructor(props) {
@@ -27,7 +28,7 @@ class App extends React.Component {
   }
 
   callBackendAPI = async () => {
-    let res = await axios.get('/login')
+    let res = await axios.get('/generator')
     .then( (response) => { return response.data } )
     .catch( (err) => console.log(err) );
     console.log('response data', res);
@@ -40,23 +41,38 @@ class App extends React.Component {
       <div className="App">
         <div className="header">
           <object className="logo" data={logo} type="image/svg+xml"></object>
-          <a href="/">
+          <a href="/home">
             <h3> Password Generator </h3>
           </a>
         </div>
-        <Router>
-          <Route path="/">
+
+        <Router >
+
+          <Route exact path="/" render={() => (<Redirect to="/home" />)} />
+
+          <Route path="/home">
             <Link to="/register" className="log-button">
+              <h4 > Register new account </h4>
+            </Link>
+            <Link to="/login" className="log-button">
               <h4 > Login to account </h4>
             </Link>
           </Route>
+
           <Route path="/register">
-            <SignIn name={userName}/>
+            <SignIn />
           </Route>
+
+          <Route path="/login">
+            <Login />
+          </Route>
+
           <Route path="/generator">
-            <Generator image={logo}/>
+            <Generator name={userName} image={logo}/>
           </Route>
+
         </Router>
+
       </div>
     );
   }

@@ -42,6 +42,7 @@ class Generator extends React.Component {
 
   render() {
     const { result,  } = this.state;
+    const { name } = this.props;
     return(
       <div className="generator">
         <div className="popup" ref={this.popupRef} >
@@ -49,6 +50,7 @@ class Generator extends React.Component {
         </div>
         <div className="info">
           {/* <object className="logo" data={this.props.image} type="image/svg+xml"></object> */}
+          <h1> Hello {name} </h1>
           <p className="text">New Password: <code className="result" ref={this.passwordRef}>{result}</code> </p>
         </div>
         <div className="buttons">
