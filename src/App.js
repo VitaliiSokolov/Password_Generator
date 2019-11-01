@@ -16,9 +16,15 @@ import Error from './components/error';
 class App extends React.Component {
   constructor(props) {
     super(props);
+    this.callbackFunction = this.callbackFunction.bind(this);
     this.state = {
-      userName: null
+      userName: null,
+      token: 'asd'
     };
+  }
+
+  callbackFunction = (childData) => {
+    this.setState({token: childData});
   }
 
   render() {
@@ -49,11 +55,11 @@ class App extends React.Component {
           </Route>
 
           <Route path='/login'>
-            <Login name={userName}/>
+            <Login name={userName} parentCallback = {this.callbackFunction} />
           </Route>
 
           <Route path='/gen'>
-            <Generator name={userName} image={logo}/>
+            <Generator name={userName} image={logo} token={this.state.token} />
           </Route>
 
           {/* <Route path='*' component={Error} /> */}

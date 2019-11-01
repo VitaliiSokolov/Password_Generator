@@ -20,9 +20,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // INstantiating the express-jwt middleware
-const jwtMW = exjwt({
-  secret: 'keyboard cat 4 ever'
-});
+// const jwtMW = exjwt({
+//   secret: 'keyboard cat 4 ever'
+// });
 
 // MOCKING DB just for test
 let users = [
@@ -37,23 +37,23 @@ let users = [
     password: '3513'
   }
 ];
-
 // LOGIN ROUTE
 app.post('/login', (req, res) => {
   const { username, password } = req.body;
-  // Use your DB ORM logic here to find user and compare password
-  for (let user of users) { // I am using a simple array users which i made above
-    if (username == user.username && password == user.password /* Use your password hash checking logic here !*/) {
-      //If all credentials are correct do this
-      let token = jwt.sign({ id: user.id, username: user.username }, 'keyboard cat 4 ever', { expiresIn: 129600 }); // Sigining the token
+  for (let user of users) {
+    if (username == user.username && password == user.password) {
+      let token = 'Govno';
       res.json({
         sucess: true,
         err: null,
-        token
+        token,
       });
-      break;
-    } else {
-      res.status(401).json({
+      console.log('Token');
+      return;
+    }
+    else {
+      console.log('Unauthorized');
+      res.status(404).json({
         sucess: false,
         token: null,
         err: 'Username or password is incorrect'
@@ -62,8 +62,13 @@ app.post('/login', (req, res) => {
   }
 });
 
-app.get('/login', jwtMW /* Using the express jwt MW here */, (req, res) => {
-  res.send({ message: 'You are authenticated'}); //Sending some response when authenticated
+app.get('/gen', (req, res) => {
+  if(req.headers.key === 'Govno'){
+    res.send({ message: '=)' }); //Sending some response when authenticated
+  }
+  else {
+    res.send({ message: 'Unauthorized' }); //Sending some response when NOT authenticated
+  }
 });
 
 // Error handling
@@ -79,6 +84,5 @@ app.use(function (err, req, res, next) {
 // Starting the app on PORT 3000
 const PORT = 8080;
 app.listen(PORT, () => {
-  // eslint-disable-next-line
-    console.log(`Magic happens on port ${PORT}`);
+  console.log(`Magic happens on port ${PORT}`);
 });

@@ -6,12 +6,15 @@ class SignIn extends React.Component {
     super(props);
   }
 
+  componentWillUnmount(){
+  }
+
   render() {
     const { name } = this.props;
     return(
       <div className='sign-in'>
         <h1> Hello {name} </h1>
-        <form className='register' action='/login' method='post'>
+        <form className='register'>
           <label>Login</label>
           <input className='reg-input' type='text' name='userName' />
 
@@ -21,7 +24,7 @@ class SignIn extends React.Component {
           <label>Password</label>
           <input className='reg-input' type='text' name='userMainPassword' />
 
-          <input className='reg-button' type='submit' value='Sign In' />
+          <button className='reg-button' onClick={ (e) => { this.callBackendAPI(e); } } >Sign In</button>
         </form>
       </div>
     );

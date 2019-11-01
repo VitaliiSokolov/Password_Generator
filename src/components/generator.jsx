@@ -1,17 +1,38 @@
 import React from 'react';
 import './generator.css';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
+const axios = require('axios');
 class Generator extends React.Component {
   constructor(props) {
     super(props);
     this.generate = this.generate.bind(this);
     this.onCopy = this.onCopy.bind(this);
     this.popupRef = React.createRef();
+    this.callBackendAPIGet = this.callBackendAPIGet.bind(this);
     this.state = {
       result: '',
       copied: false,
+      name: 'User'
     };
   }
+
+  componentDidMount() {
+    this.callBackendAPIGet();
+  }
+
+  callBackendAPIGet = async () => {
+    const {token} = this.props;
+    await axios.get('/gen', {headers: {key: token}} )
+      .then( (res) => {
+        console.log(res);
+        let data = res.data.message;
+        console.log('new data', data);
+        this.setState({ name: data });
+        return;
+      })
+      .catch((err) => { console.log(err); });
+  };
+
   // React-Copy-to-Clipboard
   onCopy = () => {
     let poppupElement = this.popupRef.current;
@@ -42,7 +63,7 @@ class Generator extends React.Component {
 
   render() {
     const { result,  } = this.state;
-    const { name } = this.props;
+    const { name } = this.state;
     return(
       <div className='generator'>
         <div className='popup' ref={this.popupRef} >
