@@ -93,4 +93,4 @@ app.use(express.static(path.join(__dirname, '/build')));
 // Anything that doesn't match the above, send back index.html
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname + '/build/index.html'));
-})
+});
