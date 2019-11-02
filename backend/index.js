@@ -10,7 +10,7 @@ const app = express();
 
 // See the react auth blog in which cors is required for access
 app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:1234');
   res.setHeader('Access-Control-Allow-Headers', 'Content-type,Authorization');
   next();
 });
@@ -82,7 +82,7 @@ app.use(function (err, req, res, next) {
 });
 
 // Starting the app on PORT 3000
-const PORT = 8080;
+const PORT = 1234;
 app.listen(PORT, () => {
   console.log(`Magic happens on port ${PORT}`);
 });
