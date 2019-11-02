@@ -1,8 +1,8 @@
 // Bringing all the dependencies in
 const express = require('express');
 const bodyParser = require('body-parser');
-const jwt = require('jsonwebtoken');
-const exjwt = require('express-jwt');
+// const jwt = require('jsonwebtoken');
+// const exjwt = require('express-jwt');
 
 // Instantiating the express app
 const app = express();
