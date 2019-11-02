@@ -14,7 +14,6 @@
   "scripts": {
     "start": " npm install && npm run build && cd ./backend && node index.js",
     "starte": "cd backend && node index.js",
-    // "heroku-postbuild": "cd ../ && npm install && npm run build",
     "startt": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
