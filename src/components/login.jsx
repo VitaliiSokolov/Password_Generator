@@ -12,8 +12,8 @@ class SignIn extends React.Component {
     this.userNameRef =  React.createRef();
     this.state = {
       name: 'Shadow',
-      login: 'vetal',
-      password: '3513',
+      login: 'x',
+      password: 'x',
       token: 'ssss',
       validation: false
     };
