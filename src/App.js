@@ -12,29 +12,29 @@ import Generator from './components/generator';
 import SignIn from './components/sign-in';
 import Login from './components/login';
 import Error from './components/error';
-
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.callbackFunction = this.callbackFunction.bind(this);
     this.state = {
       userName: null,
-      token: 'asd'
+      logged: false
     };
   }
 
   callbackFunction = (childData) => {
-    this.setState({token: childData});
+    this.setState({logged: childData});
   }
 
   render() {
-    const { userName } = this.state;
+    const { userName, logged } = this.state;
+    const token = localStorage.getItem('token');
     return (
       <div className='App'>
         <div className='header'>
           <object className='logo' data={logo} type='image/svg+xml' alt='VS'></object>
           <a href='/home'>
-            <h3> Password Generator </h3>
+            <h3>Password Generator</h3>
           </a>
         </div>
 
@@ -42,16 +42,13 @@ class App extends React.Component {
           <Route exact path='/' render={() => (<Redirect to='/home' />)} />
 
           <Route path='/home'>
-            <Link to='/register' className='log-button'>
-              <h4 > Register new account </h4>
-            </Link>
-            <Link to='/login' className='log-button'>
-              <h4 > Login to account </h4>
-            </Link>
+            { console.log('token App: ', token) }
+            {!token && !logged ? <Link to='/register' className='log-button'> <h4>Register new account</h4> </Link>:null }
+            {token && !logged ? <Link to='/gen' className='log-button'> <h4> Generator</h4> </Link> : <Link to='/login' className='log-button'> <h4>Login to account</h4> </Link> }
           </Route>
 
           <Route path='/register'>
-            <SignIn name={userName}/>
+            <SignIn/>
           </Route>
 
           <Route path='/login'>
@@ -59,7 +56,7 @@ class App extends React.Component {
           </Route>
 
           <Route path='/gen'>
-            <Generator name={userName} image={logo} token={this.state.token} />
+            <Generator parentCallback = {this.callbackFunction} name={userName} image={logo} />
           </Route>
 
           {/* <Route path='*' component={Error} /> */}

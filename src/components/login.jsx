@@ -12,8 +12,8 @@ class SignIn extends React.Component {
     this.userNameRef =  React.createRef();
     this.state = {
       name: 'Shadow',
-      login: 'x',
-      password: 'x',
+      login: 'vetal',
+      password: '3513',
       token: 'ssss',
       validation: false
     };
@@ -25,8 +25,8 @@ class SignIn extends React.Component {
     const { login, password, validation} = this.state;
     axios.post('/login', { username: login, password: password } )
       .then( (res) => {
-        console.log(res);
-        this.props.parentCallback(res.data.token);
+        localStorage.setItem('token', res.data.token);
+        this.props.parentCallback(true);
         let data = res.config.data;
         data = JSON.parse(data);
         this.setState({ name: data.username });

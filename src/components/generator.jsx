@@ -1,5 +1,6 @@
 import React from 'react';
 import './generator.css';
+import { withRouter } from 'react-router-dom';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 const axios = require('axios');
 class Generator extends React.Component {
@@ -7,27 +8,38 @@ class Generator extends React.Component {
     super(props);
     this.generate = this.generate.bind(this);
     this.onCopy = this.onCopy.bind(this);
+    this.logout = this.logout.bind(this);
     this.popupRef = React.createRef();
     this.callBackendAPIGet = this.callBackendAPIGet.bind(this);
     this.state = {
       result: '',
       copied: false,
-      name: 'User'
+      name: 'User',
+      reload: false
     };
   }
 
-  componentDidMount() {
+  componentDidMount(){
     this.callBackendAPIGet();
+  }
+  componentDidUpdate(){
+    if(this.state.reload){
+      console.log('Logout');
+      this.props.history.push('/');
+    }
   }
 
   callBackendAPIGet = async () => {
-    const {token} = this.props;
-    await axios.get('/gen', {headers: {key: token}} )
+    const localToken = localStorage.getItem('token');
+    await axios.get('/gen', {headers: {key: localToken}} )
       .then( (res) => {
-        console.log(res);
         let data = res.data.message;
-        console.log('new data', data);
         this.setState({ name: data });
+        console.log('local',localToken);
+        if(localToken !== 'Govno'){
+          console.log('redirect');
+          this.props.history.push('/home');
+        }
         return;
       })
       .catch((err) => { console.log(err); });
@@ -60,6 +72,12 @@ class Generator extends React.Component {
     this.setState({ result: password, });
     console.log('Created: ', password );
   };
+  // Logout from account
+  logout = () => {
+    localStorage.removeItem('token');
+    this.setState({reload: true});
+    this.props.parentCallback(false);
+  }
 
   render() {
     const { result,  } = this.state;
@@ -80,9 +98,10 @@ class Generator extends React.Component {
           </CopyToClipboard>
         </div>
         <input className='check' type='text' placeholder='Check Your Result: ' />
+        <button className='copy' onClick={ () => { this.logout(); } } >Logout</button>
       </div>
     );
   }
 }
 
-export default Generator;
+export default withRouter(Generator);

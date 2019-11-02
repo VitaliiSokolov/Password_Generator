@@ -48,7 +48,7 @@ app.post('/login', (req, res) => {
         err: null,
         token,
       });
-      console.log('Token');
+      console.log('Token sent');
       return;
     }
     else {

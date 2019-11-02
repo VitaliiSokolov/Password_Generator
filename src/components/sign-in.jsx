@@ -10,10 +10,9 @@ class SignIn extends React.Component {
   }
 
   render() {
-    const { name } = this.props;
     return(
       <div className='sign-in'>
-        <h1> Hello {name} </h1>
+        <h1>Hello NewBee!</h1>
         <form className='register'>
           <label>Login</label>
           <input className='reg-input' type='text' name='userName' />
