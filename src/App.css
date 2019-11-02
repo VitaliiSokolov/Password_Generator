@@ -1,8 +1,15 @@
+body{
+  background-color: gray;
+}
 .App {
   text-align: center;
   position: relative;
   width: 320px;
   margin: 0 auto;
+}
+a{
+  text-decoration: none;
+  color: #000;
 }
 .header {
   display: flex;
@@ -13,4 +20,10 @@
 }
 .logo {
   margin-right: 12px;
+}
+.log-button {
+  text-decoration: none;
+  color: #000;
+  background-color: lightyellow;
+  display: inline;
 }
