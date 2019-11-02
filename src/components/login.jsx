@@ -73,7 +73,7 @@ class SignIn extends React.Component {
           />
           {validation? <p className='wrong'>Incorrect login or password!</p>:null}
           <button className='reg-button' onClick={ (e) => { this.callBackendAPI(e); } } >Login</button>
-          <p>log: guest pass: 3513</p>
+          <p>log: vetal pass: 3513</p>
         </form>
       </div>
     );
