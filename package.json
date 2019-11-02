@@ -13,7 +13,7 @@
   },
   "scripts": {
     "start": "node ./backend/index.js",
-    "heroku-postbuild": "cd client && npm install && npm run build",
+    "heroku-postbuild": "cd ./ && npm install && npm run build",
     "startt": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
