@@ -12,8 +12,8 @@
     "react-scripts": "3.2.0"
   },
   "scripts": {
-    "start": "node ./backend/index.js",
-    "heroku-postbuild": "cd ./ && npm install && npm run build",
+    "start": "cd backend && node index.js",
+    "heroku-postbuild": "cd ../ && npm install && npm run build",
     "startt": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
