@@ -64,7 +64,7 @@ app.post('/login', (req, res) => {
 
 app.get('/gen', (req, res) => {
   if(req.headers.key === 'Govno'){
-    res.send({ message: '=)' }); //Sending some response when authenticated
+    res.send({ message: 'Tester' }); //Sending some response when authenticated
   }
   else {
     res.send({ message: 'Unauthorized' }); //Sending some response when NOT authenticated
