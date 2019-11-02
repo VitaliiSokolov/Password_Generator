@@ -82,7 +82,7 @@ app.use(function (err, req, res, next) {
 });
 
 // Starting the app on PORT 3000
-const PORT = 8080;
-app.listen(PORT, () => {
+const PORT = process.env.PORT || 8080;
+app.listen(process.env.PORT, () => {
   console.log(`Magic happens on port ${PORT}`);
 });
