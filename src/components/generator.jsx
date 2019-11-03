@@ -29,19 +29,22 @@ class Generator extends React.Component {
   componentDidMount(){
     this.callBackendAPIGet();
     console.log(this.props.name);
-
+    console.log(sessionStorage.getItem('token'));
+    console.log(this.state);
   }
   componentDidUpdate(){
   }
 
+  // localToken = sessionStorage.getItem('token');
+
   callBackendAPIGet = async () => {
-    const localToken = await localStorage.getItem('token');
+    const localToken = this.props.token;
     await axios.get('/gen', {headers: {key: localToken}} )
       .then( (res) => {
-        // console.log(res);
+        console.log(res);
         this.setState({ name: this.props.name });
-        // console.log('local',localToken);
-        if(localToken !== 'Govno'){
+        console.log('local',localToken);
+        if(!localToken){
           console.log('redirect');
           this.props.history.push('/home');
         }
@@ -90,11 +93,11 @@ class Generator extends React.Component {
   };
   // Logout from account
   logout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('userName');
+    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('userName');
     this.setState({reload: true});
     this.props.parentCallback(false);
-    this.callBackendAPIGet();
+    // this.callBackendAPIGet();
   }
   handleOnChangeMin = (e) => {
     const min = e.toString();

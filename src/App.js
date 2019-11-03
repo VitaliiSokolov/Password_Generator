@@ -24,11 +24,11 @@ class App extends React.Component {
   }
 
   callbackFunction = (childData) => {
-    localStorage.setItem('logged', childData);
+    sessionStorage.setItem('logged', childData);
     this.setState({logged: childData});
   }
   callbackFunctionUsername = (childUserName) => {
-    localStorage.setItem('userName', childUserName);
+    sessionStorage.setItem('userName', childUserName);
     this.setState({logged: childUserName});
   }
   componentDidUpdate(){
@@ -37,8 +37,8 @@ class App extends React.Component {
 
   render() {
     const { userName, logged } = this.state;
-    const token = localStorage.getItem('token');
-    const name = localStorage.getItem('userName');
+    const token = sessionStorage.getItem('token');
+    const name = sessionStorage.getItem('userName');
     return (
       <div className='App'>
         <div className='header'>

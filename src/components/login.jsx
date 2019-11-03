@@ -25,7 +25,7 @@ class SignIn extends React.Component {
     const { login, password, validation} = this.state;
     axios.post('/login', { username: login, password: password } )
       .then( (res) => {
-        localStorage.setItem('token', res.data.token);
+        sessionStorage.setItem('token', res.data.token);
         this.props.parentCallback(true);
         let data = res.config.data;
         data = JSON.parse(data);
