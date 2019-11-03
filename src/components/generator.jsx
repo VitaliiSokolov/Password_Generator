@@ -35,7 +35,7 @@ class Generator extends React.Component {
   }
 
   callBackendAPIGet = async () => {
-    const localToken = localStorage.getItem('token');
+    const localToken = await localStorage.getItem('token');
     await axios.get('/gen', {headers: {key: localToken}} )
       .then( (res) => {
         // console.log(res);
