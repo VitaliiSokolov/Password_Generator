@@ -30,6 +30,7 @@ class SignIn extends React.Component {
         let data = res.config.data;
         data = JSON.parse(data);
         this.setState({ name: data.username });
+        this.props.parentCallbackUsername(this.state.name);
         if(res.data.token){
           this.props.history.push('/gen');
           this.setState({ validation: !validation });
@@ -67,7 +68,7 @@ class SignIn extends React.Component {
           <label>Password</label>
           <input
             className='reg-input'
-            type='text'
+            type='password'
             name='userMainPassword'
             onChange={ (e)=> {this.handleOnChangePass(e.target.value);} }
           />

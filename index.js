@@ -29,39 +29,70 @@ let users = [
   {
     id: 1,
     username: 'vetal',
-    password: '3513'
+    password: '3513',
+    email: 'admin@gmail.com'
   },
   {
     id: 2,
     username: 'guest',
-    password: '3513'
-  }
+    password: '3513',
+    email: 'guest@gmail.com'
+  },
 ];
 // LOGIN ROUTE
 app.post('/login', (req, res) => {
   const { username, password } = req.body;
-  for (let user of users) {
-    if (username == user.username && password == user.password) {
-      let token = 'Govno';
-      res.json({
-        sucess: true,
-        err: null,
-        token,
-      });
-      console.log('Token sent');
-      return;
-    }
-    else {
-      console.log('Unauthorized');
-      res.status(404).json({
-        sucess: false,
-        token: null,
-        err: 'Username or password is incorrect'
-      });
-    }
+  if (users.map( (user) => { username == user.username && password == user.password; })) {
+    let token = 'Govno';
+    res.json({
+      sucess: true,
+      err: null,
+      token,
+    });
+    console.log('Token sent');
+    return;
+  }
+  else {
+    console.log('Unauthorized');
+    res.status(404).json({
+      sucess: false,
+      token: null,
+      err: 'Username or password is incorrect'
+    });
   }
 });
-
+// REGISTRATION ROUTE
+app.post('/register', (req, res) => {
+  const { username, password, email } = req.body;
+  if(username && password){
+    console.log('Registration successed', username, email, password );
+    users = [
+      ...users,
+      {id:users.length+1,
+        username,
+        email,
+        password}
+    ];
+    console.log(users);
+    res.json({
+      signUP: true,
+      username,
+      email,
+      password,
+      err: null,
+    });
+  } else {
+    console.log('Registration Declined');
+    res.status(404).json({
+      signUP: false,
+      username: null,
+      email: null,
+      password: null,
+      err: 'Username or password are empty'
+    });
+  }
+});
+// GENERATOR'S VIEW ROUTE
 app.get('/gen', (req, res) => {
   if(req.headers.key === 'Govno'){
     res.send({ message: 'Tester' }); //Sending some response when authenticated

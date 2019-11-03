@@ -13,8 +13,8 @@
   },
   "scripts": {
     "start": " npm install && node index.js && npm run build",
-    "starte": "cd backend && node index.js",
-    "startt": "react-scripts start",
+    "startb": "nodemon index.js",
+    "startf": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

@@ -28,3 +28,6 @@
   width: 40%;
   margin-top: 20px;
 }
+.bad {
+  border-color: red;
+}

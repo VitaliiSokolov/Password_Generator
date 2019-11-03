@@ -33,8 +33,8 @@ class Generator extends React.Component {
     const localToken = localStorage.getItem('token');
     await axios.get('/gen', {headers: {key: localToken}} )
       .then( (res) => {
-        let data = res.data.message;
-        this.setState({ name: data });
+        console.log(res);
+        this.setState({ name: this.props.name });
         console.log('local',localToken);
         if(localToken !== 'Govno'){
           console.log('redirect');

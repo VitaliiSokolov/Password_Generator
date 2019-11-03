@@ -16,14 +16,18 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.callbackFunction = this.callbackFunction.bind(this);
+    this.callbackFunctionUsername = this.callbackFunctionUsername.bind(this);
     this.state = {
-      userName: null,
-      logged: false
+      userName: 'null',
+      logged: false,
     };
   }
 
   callbackFunction = (childData) => {
     this.setState({logged: childData});
+  }
+  callbackFunctionUsername = (childUserName) => {
+    this.setState({userName: childUserName});
   }
 
   render() {
@@ -52,7 +56,7 @@ class App extends React.Component {
           </Route>
 
           <Route path='/login'>
-            <Login name={userName} parentCallback = {this.callbackFunction} />
+            <Login name={userName} parentCallback = {this.callbackFunction}  parentCallbackUsername = {this.callbackFunctionUsername} />
           </Route>
 
           <Route path='/gen'>
