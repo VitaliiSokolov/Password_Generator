@@ -25,20 +25,9 @@ class Generator extends React.Component {
       special: false
     };
   }
-
-  componentDidMount(){
-    this.callBackendAPIGet();
-    console.log(this.props.name);
-    console.log(sessionStorage.getItem('token'));
-    console.log(this.state);
-  }
-  componentDidUpdate(){
-  }
-
-  // localToken = sessionStorage.getItem('token');
-
   callBackendAPIGet = async () => {
-    const localToken = this.props.token;
+    const localToken = sessionStorage.getItem('token');
+    // const localToken = this.props.token;
     await axios.get('/gen', {headers: {key: localToken}} )
       .then( (res) => {
         console.log(res);
@@ -52,7 +41,6 @@ class Generator extends React.Component {
       })
       .catch((err) => { console.log(err); });
   };
-
   // React-Copy-to-Clipboard
   onCopy = () => {
     let poppupElement = this.popupRef.current;
@@ -97,7 +85,7 @@ class Generator extends React.Component {
     sessionStorage.removeItem('userName');
     this.setState({reload: true});
     this.props.parentCallback(false);
-    // this.callBackendAPIGet();
+    this.callBackendAPIGet();
   }
   handleOnChangeMin = (e) => {
     const min = e.toString();
