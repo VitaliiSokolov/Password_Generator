@@ -11,11 +11,18 @@ class Generator extends React.Component {
     this.logout = this.logout.bind(this);
     this.popupRef = React.createRef();
     this.callBackendAPIGet = this.callBackendAPIGet.bind(this);
+    this.handleOnChangeMin = this.handleOnChangeMin.bind(this);
+    this.handleOnChangeMax = this.handleOnChangeMax.bind(this);
+    this.handleOnChangeSpecial = this.handleOnChangeSpecial.bind(this);
     this.state = {
       result: '',
       copied: false,
       name: 'User',
-      reload: false
+      reload: false,
+      passwords: [],
+      min: 8,
+      max: 16,
+      special: false
     };
   }
 
@@ -23,19 +30,17 @@ class Generator extends React.Component {
     this.callBackendAPIGet();
   }
   componentDidUpdate(){
-    if(this.state.reload){
-      console.log('Logout');
-      this.props.history.push('/');
-    }
+    // console.log(this.state.min);
+    console.log(this.state.special);
   }
 
   callBackendAPIGet = async () => {
     const localToken = localStorage.getItem('token');
     await axios.get('/gen', {headers: {key: localToken}} )
       .then( (res) => {
-        console.log(res);
+        // console.log(res);
         this.setState({ name: this.props.name });
-        console.log('local',localToken);
+        // console.log('local',localToken);
         if(localToken !== 'Govno'){
           console.log('redirect');
           this.props.history.push('/home');
@@ -58,19 +63,30 @@ class Generator extends React.Component {
     console.log('Password coppied');
   };
   // Generating password
-  generate = () => {
-    let characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+~`|}{[]:;?><,./-=';
+  generate = async () => {
+    const { min, max, special } = this.state;
+    let characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let extentendedCharacters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+~`|}{[]:;?><,./-=';
     let password = [];
     // Generating password's length
-    const length = Math.floor(Math.random() * (16 - 8) + 8);
+    // const length = Math.floor(Math.random() * (16 - 8) + 8);
+    const length = Math.random() * (max - min) + min;
     // Generating password's chars
-    for (let i = 0; i < length; i++) {
-      const genChar = Math.floor(Math.random() * 91);
-      password.push(characters[genChar]);
+    if(special){
+      for (let i = 0; i < length; i++) {
+        const genChar = Math.floor(Math.random() * 91);
+        password.push(extentendedCharacters[genChar]);
+      }
+    } else {
+      for (let i = 0; i < length; i++) {
+        const genChar = Math.floor(Math.random() * 68);
+        password.push(characters[genChar]);
+      }
     }
     password = password.join('');
-    this.setState({ result: password, });
-    console.log('Created: ', password );
+    await this.setState({result: password, passwords: [...this.state.passwords, {id: this.state.passwords + 1, password}] });
+    console.log('Created: ', this.state.result );
+    console.log('Array: ', this.state.passwords );
   };
   // Logout from account
   logout = () => {
@@ -78,10 +94,22 @@ class Generator extends React.Component {
     this.setState({reload: true});
     this.props.parentCallback(false);
   }
+  handleOnChangeMin = (e) => {
+    const min = e.toString();
+    this.setState({min});
+  }
+  handleOnChangeMax = (e) => {
+    const max = e.toString();
+    this.setState({max});
+  }
+  handleOnChangeSpecial = (e) => {
+    this.setState({special: !this.state.special});
+  }
+
 
   render() {
     const { result,  } = this.state;
-    const { name } = this.state;
+    const { name, passwords } = this.state;
     return(
       <div className='generator'>
         <div className='popup' ref={this.popupRef} >
@@ -89,7 +117,31 @@ class Generator extends React.Component {
         </div>
         <div className='info'>
           <h1> Hello {name} </h1>
-          <p className='text'>New Password: <code className='result' ref={this.passwordRef}>{result}</code> </p>
+          <p className='text'> New Password: </p>
+          <div className="min-max">
+            <input
+              className='inputMinMax'
+              type="text"
+              // placeholder='min'
+              defaultValue={8}
+              onChange={ (e)=> {this.handleOnChangeMin(e.target.value);} }
+            />
+            <input
+              className='inputMinMax'
+              type="text"
+              // placeholder='max'
+              defaultValue={16}
+              onChange={ (e)=> {this.handleOnChangeMax(e.target.value);} }
+            />
+            <input
+              type="checkbox"
+              id="radioButton"
+              placeholder='##'
+              onChange={ (e)=> {this.handleOnChangeSpecial(e.target.value);} }
+            />
+            <label htmlFor="radioButton" className='radioButtonLabel' >Special</label>
+          </div>
+          <code className='result' ref={this.passwordRef}>{result}</code>
         </div>
         <div className='buttons'>
           <button className='gen' onClick={ () => { this.generate();} } >Generate password</button>
@@ -97,8 +149,10 @@ class Generator extends React.Component {
             <button className='copy' >Copy to clipboard</button>
           </CopyToClipboard>
         </div>
-        <input className='check' type='text' placeholder='Check Your Result: ' />
-        <button className='copy' onClick={ () => { this.logout(); } } >Logout</button>
+        <ul className='passList'>
+          { passwords.map( (pass) => { return <li key={pass.id} className='pass'> {pass.password} </li>; } )}
+        </ul>
+        <button className='copy logout' onClick={ () => { this.logout(); } } >Logout</button>
       </div>
     );
   }

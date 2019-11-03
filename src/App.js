@@ -46,7 +46,7 @@ class App extends React.Component {
           <Route exact path='/' render={() => (<Redirect to='/home' />)} />
 
           <Route path='/home'>
-            { console.log('token App: ', token) }
+            {/* { console.log('token App: ', token) } */}
             {!token && !logged ? <Link to='/register' className='log-button'> <h4>Register new account</h4> </Link>:null }
             {token && !logged ? <Link to='/gen' className='log-button'> <h4> Generator</h4> </Link> : <Link to='/login' className='log-button'> <h4>Login to account</h4> </Link> }
           </Route>
