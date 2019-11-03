@@ -18,21 +18,27 @@ class App extends React.Component {
     this.callbackFunction = this.callbackFunction.bind(this);
     this.callbackFunctionUsername = this.callbackFunctionUsername.bind(this);
     this.state = {
-      userName: 'null',
+      userName: '',
       logged: false,
     };
   }
 
   callbackFunction = (childData) => {
+    localStorage.setItem('logged', childData);
     this.setState({logged: childData});
   }
   callbackFunctionUsername = (childUserName) => {
-    this.setState({userName: childUserName});
+    localStorage.setItem('userName', childUserName);
+    this.setState({logged: childUserName});
+  }
+  componentDidUpdate(){
+    console.log(this.state.logged);
   }
 
   render() {
     const { userName, logged } = this.state;
     const token = localStorage.getItem('token');
+    const name = localStorage.getItem('userName');
     return (
       <div className='App'>
         <div className='header'>
@@ -60,7 +66,7 @@ class App extends React.Component {
           </Route>
 
           <Route path='/gen'>
-            <Generator parentCallback = {this.callbackFunction} name={userName} image={logo} />
+            <Generator parentCallback = {this.callbackFunction} name={name} image={logo} />
           </Route>
 
           {/* <Route path='*' component={Error} /> */}

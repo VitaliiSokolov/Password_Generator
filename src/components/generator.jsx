@@ -28,10 +28,10 @@ class Generator extends React.Component {
 
   componentDidMount(){
     this.callBackendAPIGet();
+    console.log(this.props.name);
+
   }
   componentDidUpdate(){
-    // console.log(this.state.min);
-    console.log(this.state.special);
   }
 
   callBackendAPIGet = async () => {
@@ -91,8 +91,10 @@ class Generator extends React.Component {
   // Logout from account
   logout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('userName');
     this.setState({reload: true});
     this.props.parentCallback(false);
+    this.callBackendAPIGet();
   }
   handleOnChangeMin = (e) => {
     const min = e.toString();
