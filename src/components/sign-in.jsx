@@ -1,5 +1,6 @@
 import React from 'react';
 import './sign-in.css';
+import { withRouter } from 'react-router-dom';
 const axios = require('axios');
 class SignIn extends React.Component {
   constructor(props) {
@@ -7,6 +8,7 @@ class SignIn extends React.Component {
     this.handleOnChangeUser = this.handleOnChangeUser.bind(this);
     this.handleOnChangeEmail = this.handleOnChangeEmail.bind(this);
     this.handleOnChangePass = this.handleOnChangePass.bind(this);
+    this.popupRef = React.createRef();
     this.state = {
       login: '',
       email: '',
@@ -14,11 +16,6 @@ class SignIn extends React.Component {
       inputValidation: false
     };
   }
-
-  // componentDidUpdate(){
-  //   console.log(this.state.login.split(''));
-  // }
-
   callBackendAPI = async (e) => {
     e.preventDefault();
     const { login, password, email } = this.state;
@@ -30,7 +27,16 @@ class SignIn extends React.Component {
       this.setState({inputValidation: false});
     }
     axios.post('/register', { username: login, email, password } )
-      .then( (res) => {console.log(res);})
+      .then( (res) => {
+        console.log(res);
+        let poppupElement = this.popupRef.current;
+        poppupElement.classList.add('active');
+        const hidden = () => {
+          poppupElement.classList.remove('active');
+          this.props.history.push('/login');
+        };
+        setTimeout(hidden, 2500);
+      })
       .catch( (error) => {console.log(error);});
   };
   handleOnChangeUser = (e) => {
@@ -47,6 +53,11 @@ class SignIn extends React.Component {
     const { inputValidation } = this.state;
     return(
       <div className='sign-in'>
+
+        <div className='popup' ref={this.popupRef} >
+          <h1>Welcome!</h1>
+        </div>
+
         <h1>Hello NewBee!</h1>
         <form className='register'>
           <label>Login</label>
@@ -81,4 +92,4 @@ class SignIn extends React.Component {
   }
 }
 
-export default SignIn;
+export default withRouter(SignIn);
