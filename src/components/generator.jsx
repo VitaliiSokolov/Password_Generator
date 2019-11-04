@@ -28,6 +28,9 @@ class Generator extends React.Component {
   componentDidMount(){
     this.setState({name: sessionStorage.getItem('userName')});
   }
+  redirect = async () => {
+    await this.props.history.push('/home');
+  };
   callBackendAPIGet = async () => {
     const localToken = sessionStorage.getItem('token');
     // const localToken = this.props.token;
