@@ -14,7 +14,7 @@
     "sequelize": "^5.21.2"
   },
   "scripts": {
-    "start": " npm install && nodemon server.js && npm run build",
+    "start": " npm install && node server.js && npm run build",
     "startb": "nodemon server.js",
     "startf": "react-scripts start",
     "build": "react-scripts build",
