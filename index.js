@@ -39,6 +39,10 @@ let users = [
     email: 'guest@gmail.com'
   },
 ];
+// app.get('/*', (req, res) => {
+//   console.log(req.headers);
+
+// });
 // LOGIN ROUTE
 app.post('/login', (req, res) => {
   const { username, password } = req.body;
@@ -101,7 +105,6 @@ app.get('/gen', (req, res) => {
     res.send({ message: 'Unauthorized' }); //Sending some response when NOT authenticated
   }
 });
-
 // Error handling
 app.use(function (err, req, res, next) {
   if (err.name === 'UnauthorizedError') { // Send the error rather than to show it on the console
@@ -111,13 +114,11 @@ app.use(function (err, req, res, next) {
     next(err);
   }
 });
-
 // Starting the app on PORT 3000
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log(`Magic happens on port ${PORT}`);
 });
-
 const path = require('path');
 // Serve static files from the React frontend app
 app.use(express.static(path.join(__dirname, '/build')));

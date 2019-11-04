@@ -11,10 +11,10 @@ class SignIn extends React.Component {
     this.handleOnChangePass = this.handleOnChangePass.bind(this);
     this.userNameRef =  React.createRef();
     this.state = {
-      name: 'Shadow',
-      login: 'x',
-      password: 'x',
-      token: 'ssss',
+      name: 'default name',
+      login: 'wrong login',
+      password: 'wrong password',
+      token: 'empty token',
       validation: false
     };
   }
@@ -52,29 +52,18 @@ class SignIn extends React.Component {
   }
 
   render() {
-    const { name, validation } = this.state;
+    const { validation } = this.state;
     return(
       <div className='sign-in'>
-        <h1> Hello {name} </h1>
+        <h1> Hello </h1>
         <form className='register'>
           <label>Login</label>
-          <input
-            className='reg-input'
-            type='text'
-            name='userName'
-            ref={this.userNameRef}
-            onChange={ (e)=> {this.handleOnChangeUser(e.target.value);} }
-          />
+          <input className='reg-input' type='text' name='userName' ref={this.userNameRef} onChange={ (e)=> {this.handleOnChangeUser(e.target.value);} } />
           <label>Password</label>
-          <input
-            className='reg-input'
-            type='password'
-            name='userMainPassword'
-            onChange={ (e)=> {this.handleOnChangePass(e.target.value);} }
-          />
-          {validation? <p className='wrong'>Incorrect login or password!</p>:null}
+          <input className='reg-input' type='password' name='userMainPassword' onChange={ (e)=> {this.handleOnChangePass(e.target.value);} } />
+          {validation? <p className='wrong'>Incorrect login or password!</p> : null}
           <button className='reg-button' onClick={ (e) => { this.callBackendAPI(e); } } >Login</button>
-          <p>log: vetal pass: 3513</p>
+          {/* <p>log: vetal pass: 3513</p> */}
         </form>
       </div>
     );

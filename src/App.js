@@ -11,7 +11,7 @@ import logo from './vs.svg';
 import Generator from './components/generator';
 import SignIn from './components/sign-in';
 import Login from './components/login';
-import Error from './components/error';
+// import Error from './components/error';
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -29,10 +29,10 @@ class App extends React.Component {
   }
   callbackFunctionUsername = (childUserName) => {
     sessionStorage.setItem('userName', childUserName);
-    this.setState({logged: childUserName});
+    this.setState({userName: childUserName});
   }
   componentDidUpdate(){
-    console.log(this.state.logged);
+    // console.log(this.state.logged);
   }
 
   render() {

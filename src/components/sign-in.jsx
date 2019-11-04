@@ -58,7 +58,7 @@ class SignIn extends React.Component {
           <h1>Welcome!</h1>
         </div>
 
-        <h1>Hello NewBee!</h1>
+        <h1>Hello</h1>
         <form className='register'>
           <label>Login</label>
           <input
