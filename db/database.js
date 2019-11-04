@@ -1,15 +1,17 @@
 const Sequelize = require('sequelize');
-const sequelize = new Sequelize('mydb', 'root', 'c0ld.1ce', {
+// const sequelize = new Sequelize('mydb', 'root', 'c0ld.1ce', {
+//   dialect: 'mysql',
+//   host: 'localhost',
+//   port: 3306,
+// });
+// module.exports = sequelize;
+
+const sequelize = new Sequelize('heroku_e149ee3e4502658', 'b815ad3a871eeb', 'a3f75808', {
   dialect: 'mysql',
-  host: 'localhost',
-  port: 3306,
+  host: 'eu-cdbr-west-02.cleardb.net',
 });
 module.exports = sequelize;
 
-// sequelize.sync().then(result=>{
-//   console.log(result);
-// })
-//   .catch(err=> console.log(err));
 
 const UserModel = sequelize.define('user', {
   id: {
@@ -33,6 +35,10 @@ const UserModel = sequelize.define('user', {
 });
 module.exports = UserModel;
 
+// sequelize.sync().then(result=>{
+//   console.log(result);
+// })
+//   .catch(err=> console.log(err));
 
 // create user
 // UserModel.create({
