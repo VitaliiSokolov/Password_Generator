@@ -13,7 +13,8 @@ class SignIn extends React.Component {
       login: '',
       email: '',
       password: '',
-      inputValidation: false
+      inputValidation: false,
+      errorMessage: ''
     };
   }
   callBackendAPI = async (e) => {
@@ -29,6 +30,7 @@ class SignIn extends React.Component {
     axios.post('/register', { username: login, email, password } )
       .then( (res) => {
         console.log(res);
+        this.setState({errorMessage: ''});
         let poppupElement = this.popupRef.current;
         poppupElement.classList.add('active');
         const hidden = () => {
@@ -37,7 +39,10 @@ class SignIn extends React.Component {
         };
         setTimeout(hidden, 2500);
       })
-      .catch( (error) => {console.log(error);});
+      .catch( (error) => {
+        console.log(error);
+        this.setState({errorMessage: 'Wrong data', inputValidation: true});
+      });
   };
   handleOnChangeUser = (e) => {
     this.setState({login: e});
@@ -50,41 +55,21 @@ class SignIn extends React.Component {
   }
 
   render() {
-    const { inputValidation } = this.state;
+    const { inputValidation, errorMessage } = this.state;
     return(
       <div className='sign-in'>
-
         <div className='popup' ref={this.popupRef} >
           <h1>Welcome!</h1>
         </div>
-
         <h1>Hello</h1>
         <form className='register'>
           <label>Login</label>
-          <input
-            className={inputValidation? 'reg-input bad':'reg-input'}
-            type='text'
-            name='userName'
-            ref={this.userNameRef}
-            onChange={ (e)=> {this.handleOnChangeUser(e.target.value);} }
-          />
-
+          <input className={inputValidation? 'reg-input bad':'reg-input'} type='text' name='userName' ref={this.userNameRef} onChange={ (e)=> {this.handleOnChangeUser(e.target.value);} } />
           <label>Email</label>
-          <input className='reg-input'
-            type='text'
-            name='userEmail'
-            ref={this.userNameRef}
-            onChange={ (e)=> {this.handleOnChangeEmail(e.target.value);} }
-          />
-
+          <input className={inputValidation? 'reg-input bad':'reg-input'} type='text' name='userEmail' ref={this.userNameRef} onChange={ (e)=> {this.handleOnChangeEmail(e.target.value);} } />
           <label>Password</label>
-          <input
-            className={inputValidation? 'reg-input bad':'reg-input'}
-            type='password'
-            name='userMainPassword'
-            onChange={ (e)=> {this.handleOnChangePass(e.target.value);} }
-          />
-          {inputValidation? <p>Please enter correct login and password</p> : null }
+          <input className={inputValidation? 'reg-input bad':'reg-input'} type='password' name='userMainPassword' onChange={ (e)=> {this.handleOnChangePass(e.target.value);} } />
+          {inputValidation? <p style={{'width' : '85%'}}>{errorMessage}</p> : null }
           <button className='reg-button' onClick={ (e) => { this.callBackendAPI(e); } } >Sign In</button>
         </form>
       </div>

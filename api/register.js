@@ -1,32 +1,42 @@
-const Register = (server, usersArray) => {
+const UserModel = require('../db/database');
+const Register = (server) => {
   // REGISTRATION ROUTE
-  server.post('/register', (req, res) => {
+  server.post('/register', async (req, res) => {
     const { username, password, email } = req.body;
-    if(username && password){
-      console.log('Registration successed', username, email, password );
-      usersArray = [
-        ...usersArray,
-        {id:usersArray.length+1,
+    let user = await UserModel.findOne({where: {email}});
+    if(!user) {
+      if(username && password){
+        UserModel.create({ username: username, email: email, password: password, })
+          .then(res=>{
+            const user = {id: res.id, username: res.username, email: res.email, password: res.password};
+            console.log(user);
+          })
+          .catch(err=>console.log(err));
+        res.json({
+          signUP: true,
           username,
           email,
-          password}
-      ];
-      console.log(usersArray);
-      res.json({
-        signUP: true,
-        username,
-        email,
-        password,
-        err: null,
-      });
+          password,
+          err: null,
+        });
+      } else {
+        console.log('Registration Declined: Username and password are empty');
+        res.status(400).json({
+          signUP: false,
+          username: null,
+          email: null,
+          password: null,
+          error: 'Username and password are empty'
+        });
+      }
     } else {
-      console.log('Registration Declined');
-      res.status(404).json({
+      console.log('Registration Declined: User already exist');
+      res.status(400).json({
         signUP: false,
         username: null,
         email: null,
         password: null,
-        err: 'Username or password are empty'
+        error: 'User already exist'
       });
     }
   });
