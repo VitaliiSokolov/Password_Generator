@@ -1,6 +1,6 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import './sign-in.css';
+import './login.css';
 const axios = require('axios');
 
 class SignIn extends React.Component {
@@ -55,15 +55,13 @@ class SignIn extends React.Component {
     const { validation } = this.state;
     return(
       <div className='sign-in'>
-        <h1> Hello </h1>
         <form className='register'>
-          <label>Login</label>
+          <label className='login' >Login</label>
           <input className='reg-input' type='text' name='userName' ref={this.userNameRef} onChange={ (e)=> {this.handleOnChangeUser(e.target.value);} } />
-          <label>Password</label>
+          <label className='password' >Password</label>
           <input className='reg-input' type='password' name='userMainPassword' onChange={ (e)=> {this.handleOnChangePass(e.target.value);} } />
           {validation? <p className='wrong'>Incorrect login or password!</p> : null}
-          <button className='reg-button' onClick={ (e) => { this.callBackendAPI(e); } } >Login</button>
-          {/* <p>log: vetal pass: 3513</p> */}
+          <button className='reg-button myButtonLogin' onClick={ (e) => { this.callBackendAPI(e); } } >Login</button>
         </form>
       </div>
     );

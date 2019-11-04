@@ -2,7 +2,6 @@
   margin: 0 auto;
   padding: 20px 10px;
   width: 300px;
-  background-color: whitesmoke;
   border-radius: 25px;
   display: flex;
   flex-direction: column;
@@ -40,16 +39,18 @@
   width: 100%;
   display: flex;
   flex-direction: column;
+  font-weight: bold;
 }
 .result {
   width: 80%;
-  color: red;
+  color: #330000;
   padding: 5px 10px;
   height: 19px;
-  margin: 10px 0 0 10px;
   border-radius: 25px;
   font-weight: bold;
-  background-color: lightsteelblue;
+  background-color: transparent;
+  font-style: oblique;
+  border: 1px solid #fff;
 }
 .buttons {
   width: 100%;
@@ -87,12 +88,14 @@
   max-height: 100px;
   width: 60%;
   overflow-y: scroll;
+  padding: 0;
 }
 .pass {
-  list-style: decimal;
-  text-align: left;
+  list-style: none;
+  text-align: center;
   font-size: 15px;
   line-height: 20px;
+  color: #fff;
 }
 .min-max {
   display: flex;
@@ -104,10 +107,81 @@
 .inputMinMax {
   width: 25%;
   text-align: center;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #fff;
+  color: #fff;
+}
+.inputMinMax:focus {
+  outline: none;
+  border: 1px solid #fff;
 }
 .radioButtonLabel {
   margin-bottom: 3px;
 }
 .logout {
   width: 100px;
+}
+.myButtonGen {
+	background-color:#44c767;
+	border-radius:28px;
+	border:1px solid #18ab29;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:10px;
+	padding:12px 25px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #2f6627;
+}
+.myButtonGen:hover {
+	background-color:#5cbf2a;
+}
+.myButtonGen:active {
+	position:relative;
+	top:1px;
+}
+.myButtonCopy {
+	background-color:#599bb3;
+	border-radius:28px;
+	border:1px solid #29668f;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:10px;
+	padding:12px 25px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #3d768a;
+}
+.myButtonCopy:hover {
+	background-color:#408c99;
+}
+.myButtonCopy:active {
+	position:relative;
+	top:1px;
+}
+.myButtonLogout {
+	box-shadow:inset 0px 1px 0px 0px #cf866c;
+	background:linear-gradient(to bottom, #d0451b 5%, #bc3315 100%);
+	background-color:#d0451b;
+	border-radius:3px;
+	border:1px solid #942911;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:13px;
+	padding:6px 24px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #854629;
+}
+.myButtonLogout:hover {
+	background:linear-gradient(to bottom, #bc3315 5%, #d0451b 100%);
+	background-color:#bc3315;
+}
+.myButtonLogout:active {
+	position:relative;
+	top:1px;
 }

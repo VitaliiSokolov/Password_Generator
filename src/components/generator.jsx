@@ -105,33 +105,36 @@ class Generator extends React.Component {
   }
 
   render() {
-    const { result, passwords } = this.state;
+    const { result, passwords,special } = this.state;
     return(
       <div className='generator'>
         <div className='popup' ref={this.popupRef} >
           <h1>Coppied!</h1>
         </div>
         <div className='info'>
+          <button className='copy logout myButtonLogout' onClick={ () => { this.logout(); } } >Logout</button>
           <h1> Hello {this.props.name} </h1>
           <p className='text'> New Password: </p>
           <div className="min-max">
             <input className='inputMinMax' type="text" defaultValue={8} onChange={ (e)=> {this.handleOnChangeMin(e.target.value);} } />
             <input className='inputMinMax' type="text" defaultValue={16} onChange={ (e)=> {this.handleOnChangeMax(e.target.value);} } />
             <input type="checkbox" id="radioButton" placeholder='##' onChange={ (e)=> {this.handleOnChangeSpecial(e.target.value);} } />
-            <label htmlFor="radioButton" className='radioButtonLabel' >Special</label>
+            <label htmlFor="radioButton"
+              className='radioButtonLabel'
+              style={special? {'color':'#006600'}:{'color':'#ff0000'}}
+            >Special</label>
           </div>
           <code className='result' ref={this.passwordRef}>{result}</code>
         </div>
         <div className='buttons'>
-          <button className='gen' onClick={ () => { this.generate();} } >Generate password</button>
+          <button className='gen myButtonGen' onClick={ () => { this.generate();} } >Generate password</button>
           <CopyToClipboard onCopy={this.onCopy} text={result} >
-            <button className='copy' > Copy to clipboard </button>
+            <button className='copy myButtonCopy' > Copy to clipboard </button>
           </CopyToClipboard>
         </div>
         <ul className='passList'>
           { passwords.map( (pass) => { return <li key={pass.id} className='pass'> {pass.password} </li>; } )}
         </ul>
-        <button className='copy logout' onClick={ () => { this.logout(); } } >Logout</button>
       </div>
     );
   }

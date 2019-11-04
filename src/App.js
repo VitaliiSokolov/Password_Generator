@@ -42,9 +42,12 @@ class App extends React.Component {
     return (
       <div className='App'>
         <div className='header'>
+          <a href='/home'>
+            <h3>Password </h3>
+          </a>
           <object className='logo' data={logo} type='image/svg+xml' alt='VS'></object>
           <a href='/home'>
-            <h3>Password Generator</h3>
+            <h3> Generator</h3>
           </a>
         </div>
 

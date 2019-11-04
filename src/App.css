@@ -1,15 +1,28 @@
 body{
-  background-color: gray;
+  background: url('./background-blur-blurred-949587.jpg');
 }
 .App {
   text-align: center;
   position: relative;
-  width: 320px;
+  width: 100%;
   margin: 0 auto;
+  /* padding: 50px 0 100px; */
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  background-color: rgba(102, 153, 153, 0);
+  color: #fff;
 }
 a{
   text-decoration: none;
-  color: #000;
+  color: #fff;
+}
+h4 {
+  margin: 5px auto;
+  color: #fff;
+  width: 240px;
 }
 .header {
   display: flex;
@@ -19,11 +32,13 @@ a{
   margin: 0 auto;
 }
 .logo {
-  margin-right: 12px;
+  margin: 14px 12px;
 }
 .log-button {
   text-decoration: none;
   color: #000;
-  background: white;
-  display: inline;
+  width: 70%;
+}
+.log-button:hover {
+  background: rgba(0, 51, 0, 0.3);
 }
