@@ -25,7 +25,8 @@ class Generator extends React.Component {
       special: false
     };
   }
-  componentDidMount(){
+  async componentDidMount(){
+    await this.callBackendAPIGet();
     this.setState({name: sessionStorage.getItem('userName')});
   }
   redirect = async () => {
