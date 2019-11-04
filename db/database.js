@@ -1,28 +1,15 @@
-// import * as mysql from 'mysql';
-// import config from '../config';
-
-const mysql = require('mysql2');
 const Sequelize = require('sequelize');
-
-const connection = mysql.createConnection({
-  host: 'localhost',
-  port: 3306,
-  user: 'root',
-  password: 'c0ld.1ce',
-  database: 'mydb'
-});
-connection.connect((err) => {
-  if (err) throw err;
-  console.log('Connected!');
-});
-
 const sequelize = new Sequelize('mydb', 'root', 'c0ld.1ce', {
   dialect: 'mysql',
   host: 'localhost',
   port: 3306,
 });
-
 module.exports = sequelize;
+
+// sequelize.sync().then(result=>{
+//   console.log(result);
+// })
+//   .catch(err=> console.log(err));
 
 const UserModel = sequelize.define('user', {
   id: {
@@ -44,13 +31,8 @@ const UserModel = sequelize.define('user', {
     allowNull: false
   }
 });
-
 module.exports = UserModel;
 
-// sequelize.sync().then(result=>{
-//   console.log(result);
-// })
-//   .catch(err=> console.log(err));
 
 // create user
 // UserModel.create({
@@ -86,5 +68,4 @@ module.exports = UserModel;
 //     if(!user) return;
 //     console.log(user.username, user.password, user.email);
 //   }).catch(err=>console.log(err));
-
 

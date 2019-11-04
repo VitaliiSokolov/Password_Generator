@@ -5,6 +5,5 @@ export default {
     user: 'root',
     password: 'admin',
     database: 'mydb',
-
   }
 };

@@ -4,8 +4,6 @@ const Login = async (server) => {
   // LOGIN ROUTE
   server.post('/login', async (req, res) => {
     const { username, password } = req.body;
-    // if ( usersArray.map( (user) => { username == user.username && password == user.password; })) {
-
     const user = await UserModel.findOne({where: {username: username, password: password}});
     if ( user ) {
       let token = 'Govno';
