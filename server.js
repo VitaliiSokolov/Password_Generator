@@ -26,14 +26,6 @@ Gener(app);
 // Error Handler
 ErrorHandler(app);
 
-const path = require('path');
-// Serve static files from the React frontend app
-app.use(express.static(path.join(__dirname, '/build')));
-// Anything that doesn't match the above, send back index.html
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname + '/build/index.html'));
-});
-
 // Starting the app on PORT 3000
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
@@ -42,13 +34,17 @@ app.listen(PORT, () => {
 
 
 
+// const router = express.Router();
+// app.use('/', router);
 
 
-
-
-
-
-
+// const path = require('path');
+// // Serve static files from the React frontend app
+// app.use(express.static(path.join(__dirname, '/build')));
+// // Anything that doesn't match the above, send back index.html
+// app.get('*', (req, res) => {
+//   res.sendFile(path.join(__dirname + '/build/index.html'));
+// });
 
 
 // // LOGIN ROUTE

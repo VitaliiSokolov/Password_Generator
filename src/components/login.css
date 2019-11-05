@@ -66,3 +66,8 @@
 	position:relative;
 	top:1px;
 }
+
+
+.bad {
+  border-color: red;
+}

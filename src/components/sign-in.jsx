@@ -23,10 +23,11 @@ class SignIn extends React.Component {
     e.preventDefault();
     const { login, password, email } = this.state;
 
-    if(login == '' && password == ''){
-      if(password.splt('').length > 5) {
-        this.setState({inputValidationLogin: true, inputValidationPassword: true});
+    if(login.trim() === '' && password.trim() === ''){
+      if(password.length <5 || login.length <2) {
+        this.setState({errorMessage: 'Login or Password is too short!', inputValidationLogin: true, inputValidationPassword: true});
       }
+      return;
     } else if(login && password) {
       this.setState({inputValidationLogin: false, inputValidationEmail: false, inputValidationPassword: false});
     }
@@ -45,7 +46,7 @@ class SignIn extends React.Component {
       })
       .catch( (error) => {
         console.log(error);
-        this.setState({errorMessage: 'Incorrect input(s)', inputValidationLogin: true, inputValidationEmail: true});
+        this.setState({errorMessage: 'User with these Login/Email alredy exists', inputValidationLogin: true, inputValidationEmail: true});
       });
   };
   handleOnChangeUser = (e) => {
@@ -65,13 +66,13 @@ class SignIn extends React.Component {
         <div className='popup' ref={this.popupRef} >
           <h1>Welcome!</h1>
         </div>
-        <form className='register' autocomplete="off" >
+        <form className='register' autoComplete="off" >
           <label className='login' >Login</label>
-          <input className={inputValidationLogin? 'reg-input bad':'reg-input'} type='text' name='userName' ref={this.userNameRef} onChange={ (e)=> {this.handleOnChangeUser(e.target.value);} }  autocomplete="off" />
+          <input className={inputValidationLogin? 'reg-input bad':'reg-input'} type='text' name='userName' ref={this.userNameRef} onChange={ (e)=> {this.handleOnChangeUser(e.target.value);} }  autoComplete="off" />
           <label className='email' >Email</label>
-          <input className={inputValidationEmail? 'reg-input bad':'reg-input'} type='text' name='userEmail' ref={this.userNameRef} onChange={ (e)=> {this.handleOnChangeEmail(e.target.value);} }  autocomplete="off" />
+          <input className={inputValidationEmail? 'reg-input bad':'reg-input'} type='text' name='userEmail' ref={this.userNameRef} onChange={ (e)=> {this.handleOnChangeEmail(e.target.value);} }  autoComplete="off" />
           <label className='password' >Password</label>
-          <input className={inputValidationPassword? 'reg-input bad':'reg-input'} type='password' name='userMainPassword' onChange={ (e)=> {this.handleOnChangePass(e.target.value);} }  autocomplete="off" />
+          <input className={inputValidationPassword? 'reg-input bad':'reg-input'} type='password' name='userMainPassword' onChange={ (e)=> {this.handleOnChangePass(e.target.value);} }  autoComplete="off" />
           {inputValidationLogin || inputValidationEmail || inputValidationPassword? <p style={{'width':'85%', 'margin':'0'}}>{errorMessage}</p> : null }
           <button className='reg-button myButtonRegister' onClick={ (e) => { this.callBackendAPI(e); } } >Sign In</button>
         </form>
