@@ -32,8 +32,8 @@ class SignIn extends React.Component {
         this.setState({ name: data.username });
         this.props.parentCallbackUsername(this.state.name);
         if(res.data.token){
-          this.props.history.push('/gen');
           this.setState({ validation: !validation });
+          this.props.history.push('/gen');
         } else {
           this.setState({ validation: !validation });
         }

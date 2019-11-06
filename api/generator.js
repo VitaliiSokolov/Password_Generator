@@ -2,6 +2,7 @@ const Gener = (server) => {
   // GENERATOR'S VIEW ROUTE
   server.get('/gen', (req, res) => {
     if(req.headers.key === 'Govno'){
+      res.setHeader('Cache-Control', 'no-cache, must-revalidate');
       res.send({ message: 'Tester' }); //Sending some response when authenticated
     }
     else {
