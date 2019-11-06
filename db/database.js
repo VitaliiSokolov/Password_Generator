@@ -1,17 +1,17 @@
 const Sequelize = require('sequelize');
 
-// const sequelize = new Sequelize('mydb', 'root', 'c0ld.1ce', {
-//   dialect: 'mysql',
-//   host: 'localhost',
-//   port: 3306,
-// });
-// module.exports = sequelize;
-
-const sequelize = new Sequelize('heroku_e149ee3e4502658', 'b815ad3a871eeb', 'a3f75808', {
+const sequelize = new Sequelize('mydb', 'root', 'c0ld.1ce', {
   dialect: 'mysql',
-  host: 'eu-cdbr-west-02.cleardb.net',
+  host: 'localhost',
+  port: 3306,
 });
 module.exports = sequelize;
+
+// const sequelize = new Sequelize('heroku_e149ee3e4502658', 'b815ad3a871eeb', 'a3f75808', {
+//   dialect: 'mysql',
+//   host: 'eu-cdbr-west-02.cleardb.net',
+// });
+// module.exports = sequelize;
 
 
 const UserModel = sequelize.define('user', {
@@ -35,28 +35,28 @@ const UserModel = sequelize.define('user', {
   }
 });
 
-const PasswordList = sequelize.define('item', {
-  id: {
-    type: Sequelize.INTEGER,
-    autoIncrement: true,
-    primaryKey: true,
-    allowNull: false
-  },
-  title: {
-    type: Sequelize.STRING,
-    allowNull: false
-  },
-  value: {
-    type: Sequelize.STRING,
-    allowNull: false
-  }
-});
+// const PasswordList = sequelize.define('item', {
+//   id: {
+//     type: Sequelize.INTEGER,
+//     autoIncrement: true,
+//     primaryKey: true,
+//     allowNull: false
+//   },
+//   title: {
+//     type: Sequelize.STRING,
+//     allowNull: false
+//   },
+//   value: {
+//     type: Sequelize.STRING,
+//     allowNull: false
+//   }
+// });
 
-UserModel.hasMany(PasswordList);
-PasswordList.belongsTo(UserModel);
+// UserModel.hasMany(PasswordList);
+// PasswordList.belongsTo(UserModel);
 
 module.exports = UserModel;
-module.exports = PasswordList;
+// module.exports = PasswordList;
 
 
 
