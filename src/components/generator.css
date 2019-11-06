@@ -162,6 +162,11 @@
 	position:relative;
 	top:1px;
 }
+.listbutton{
+  padding: 6px 10px;
+  height: 25px;
+	border-radius:10px;
+}
 .myButtonLogout {
 	box-shadow:inset 0px 1px 0px 0px #cf866c;
 	background:linear-gradient(to bottom, #d0451b 5%, #bc3315 100%);
@@ -184,4 +189,49 @@
 .myButtonLogout:active {
 	position:relative;
 	top:1px;
+}
+.myButtonSwitcher {
+	box-shadow:inset 0px 1px 0px 0px #cf866c;
+	background:linear-gradient(to bottom, #1d97cf 5%, #ba9117 100%);
+	background-color:#1d97cf;
+	border-radius:3px;
+	border:1px solid #942911;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:13px;
+	padding:6px 24px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #854629;
+}
+.myButtonSwitcher:hover {
+	background:linear-gradient(to bottom, #ba9117 5%, #1d97cf 100%);
+	background-color:#ba9117;
+}
+.myButtonSwitcher:active {
+	position:relative;
+	top:1px;
+}
+.store {
+  width: 90%;
+}
+.storeList {
+  padding: 0;
+  margin: 0;
+}
+.profile {
+  padding: 0;
+  margin: 10px 0;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+h3, h5 {
+  margin: 0;
+}
+nav {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
 }

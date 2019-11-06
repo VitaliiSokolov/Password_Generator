@@ -22,7 +22,8 @@ class Generator extends React.Component {
       passwords: [],
       min: 8,
       max: 16,
-      special: false
+      special: false,
+      storage: false,
     };
   }
   async componentDidMount(){
@@ -105,36 +106,69 @@ class Generator extends React.Component {
   }
 
   render() {
-    const { result, passwords,special } = this.state;
+    let storeList = [
+      { name: 'Google', value: 'AbraKadabra', position: 0 },
+      { name: 'Google', value: 'AbraKadabra', position: 0 },
+      { name: 'Google', value: 'AbraKadabra', position: 0 },
+      { name: 'Google', value: 'AbraKadabra', position: 0 },
+      { name: 'Google', value: 'AbraKadabra', position: 0 },
+    ];
+    const { result, passwords, special, storage } = this.state;
     return(
       <div className='generator'>
+        <nav>
+          <button className='myButtonSwitcher' onClick={ () => { this.setState({ ...this.state, storage: !storage }); } } >{!storage? 'Storage' : 'Generator'}</button>
+          <button className='copy logout myButtonLogout' onClick={ () => { this.logout(); } } >Logout</button>
+        </nav>
         <div className='popup' ref={this.popupRef} >
           <h1>Coppied!</h1>
         </div>
-        <div className='info'>
-          <button className='copy logout myButtonLogout' onClick={ () => { this.logout(); } } >Logout</button>
-          <h1> Hello {this.props.name} </h1>
-          <p className='text'> New Password: </p>
-          <div className="min-max">
-            <input className='inputMinMax' type="text" defaultValue={8} onChange={ (e)=> {this.handleOnChangeMin(e.target.value);} } />
-            <input className='inputMinMax' type="text" defaultValue={16} onChange={ (e)=> {this.handleOnChangeMax(e.target.value);} } />
-            <input type="checkbox" id="radioButton" placeholder='##' onChange={ (e)=> {this.handleOnChangeSpecial(e.target.value);} } />
-            <label htmlFor="radioButton"
-              className='radioButtonLabel'
-              style={special? {'color':'#006600'}:{'color':'#ff0000'}}
-            >Special</label>
+        {storage?
+          <div className='store'>
+            <ul className='storeList'>
+              {storeList.map( (item) => {
+                return <li className='profile' key={item.position}>
+                  <h3>{item.name} :</h3>
+                  <h5>{item.value}</h5>
+                  <CopyToClipboard onCopy={this.onCopy} text={result} >
+                    <button className='copy myButtonCopy listbutton' >#</button>
+                  </CopyToClipboard>
+                </li>; })}
+            </ul>
           </div>
-          <code className='result' ref={this.passwordRef}>{result}</code>
-        </div>
-        <div className='buttons'>
-          <button className='gen myButtonGen' onClick={ () => { this.generate();} } >Generate password</button>
-          <CopyToClipboard onCopy={this.onCopy} text={result} >
-            <button className='copy myButtonCopy' > Copy to clipboard </button>
-          </CopyToClipboard>
-        </div>
-        <ul className='passList'>
-          { passwords.map( (pass) => { return <li key={pass.id} className='pass'> {pass.password} </li>; } )}
-        </ul>
+          :
+          <div className='generate'>
+            <div className='info'>
+              <h1> Hello {this.props.name} </h1>
+              <p className='text'> New Password: </p>
+              <div className="min-max">
+                <input className='inputMinMax' type="text" defaultValue={8} onChange={ (e)=> {this.handleOnChangeMin(e.target.value);} } />
+                <input className='inputMinMax' type="text" defaultValue={16} onChange={ (e)=> {this.handleOnChangeMax(e.target.value);} } />
+                <input type="checkbox" id="radioButton" placeholder='##' onChange={ (e)=> {this.handleOnChangeSpecial(e.target.value);} } />
+                <label htmlFor="radioButton"
+                  className='radioButtonLabel'
+                  style={special? {'color':'#006600'}:{'color':'#ff0000'}}
+                >Special</label>
+              </div>
+              <code className='result' ref={this.passwordRef}>{result}</code>
+            </div>
+            <div className='buttons'>
+              <button className='gen myButtonGen' onClick={ () => { this.generate();} } >Generate password</button>
+              <CopyToClipboard onCopy={this.onCopy} text={result} >
+                <button className='copy myButtonCopy' > Copy to clipboard </button>
+              </CopyToClipboard>
+            </div>
+            <ul className='passList'>
+              { passwords.map( (pass) => {
+                return <li key={pass.id} className='pass'>
+                  <h5>{pass.password}</h5>
+                  <CopyToClipboard onCopy={this.onCopy} text={result} >
+                    <button className='copy myButtonCopy listbutton' > #</button>
+                  </CopyToClipboard>
+                </li>; } )}
+            </ul>
+          </div>
+        }
       </div>
     );
   }
