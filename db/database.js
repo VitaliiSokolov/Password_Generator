@@ -1,4 +1,5 @@
 const Sequelize = require('sequelize');
+
 // const sequelize = new Sequelize('mydb', 'root', 'c0ld.1ce', {
 //   dialect: 'mysql',
 //   host: 'localhost',
@@ -33,12 +34,52 @@ const UserModel = sequelize.define('user', {
     allowNull: false
   }
 });
-module.exports = UserModel;
 
-// sequelize.sync().then(result=>{
-//   console.log(result);
-// })
-//   .catch(err=> console.log(err));
+const PasswordList = sequelize.define('item', {
+  id: {
+    type: Sequelize.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
+    allowNull: false
+  },
+  title: {
+    type: Sequelize.STRING,
+    allowNull: false
+  },
+  value: {
+    type: Sequelize.STRING,
+    allowNull: false
+  }
+});
+
+UserModel.hasMany(PasswordList);
+PasswordList.belongsTo(UserModel);
+
+module.exports = UserModel;
+module.exports = PasswordList;
+
+
+
+
+
+
+
+
+
+
+sequelize.sync().then(result=>{
+  console.log(result);
+})
+  .catch(err=> console.log(err));
+
+
+
+
+
+
+
+
+
 
 // create user
 // UserModel.create({

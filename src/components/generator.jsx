@@ -11,6 +11,7 @@ class Generator extends React.Component {
     this.logout = this.logout.bind(this);
     this.popupRef = React.createRef();
     this.callBackendAPIGet = this.callBackendAPIGet.bind(this);
+    this.callBackendAPIPost = this.callBackendAPIPost.bind(this);
     this.handleOnChangeMin = this.handleOnChangeMin.bind(this);
     this.handleOnChangeMax = this.handleOnChangeMax.bind(this);
     this.handleOnChangeSpecial = this.handleOnChangeSpecial.bind(this);
@@ -23,7 +24,8 @@ class Generator extends React.Component {
       min: 8,
       max: 16,
       special: false,
-      storage: false,
+      storage: true,
+      storeList: [],
     };
   }
   async componentDidMount(){
@@ -49,6 +51,16 @@ class Generator extends React.Component {
       })
       .catch((err) => { console.log(err); });
   };
+  callBackendAPIPost = async () => {
+    const localToken = sessionStorage.getItem('token');
+    await axios.post('/gen', { headers: {key: localToken}, body: {username: this.state.name} } )
+      .then( (res) => {
+        console.log(res.data.message);
+        this.setState({ storeList: [] });
+        return;
+      })
+      .catch((err) => { console.log(err); });
+  }
   // React-Copy-to-Clipboard
   onCopy = () => {
     let poppupElement = this.popupRef.current;
@@ -107,11 +119,11 @@ class Generator extends React.Component {
 
   render() {
     let storeList = [
-      { name: 'Google', value: 'AbraKadabra', position: 0 },
-      { name: 'Google', value: 'AbraKadabra', position: 0 },
-      { name: 'Google', value: 'AbraKadabra', position: 0 },
-      { name: 'Google', value: 'AbraKadabra', position: 0 },
-      { name: 'Google', value: 'AbraKadabra', position: 0 },
+      { name: 'Google', value: '0', position: 0 },
+      { name: 'Google', value: '1', position: 1 },
+      { name: 'Google', value: '2', position: 2 },
+      { name: 'Google', value: '3', position: 3 },
+      { name: 'Google', value: '4', position: 4 },
     ];
     const { result, passwords, special, storage } = this.state;
     return(
@@ -125,15 +137,21 @@ class Generator extends React.Component {
         </div>
         {storage?
           <div className='store'>
-            <ul className='storeList'>
+            <ul className='storeList' >
+              <button className='gen create myButtonGen' onClick={ () => { this.callBackendAPIPost(); } } >
+                Create   <i className="fa fa-plus-circle" aria-hidden="true"></i>
+              </button>
               {storeList.map( (item) => {
                 return <li className='profile' key={item.position}>
                   <h3>{item.name} :</h3>
                   <h5>{item.value}</h5>
-                  <CopyToClipboard onCopy={this.onCopy} text={result} >
-                    <button className='copy myButtonCopy listbutton' >#</button>
+                  <CopyToClipboard onCopy={this.onCopy} text={item.value} >
+                    <button className='copy myButtonCopy listbutton' >
+                      <i className="fa fa-clipboard" aria-hidden="true"></i>
+                    </button>
                   </CopyToClipboard>
-                </li>; })}
+                </li>;
+              } )}
             </ul>
           </div>
           :
@@ -161,11 +179,14 @@ class Generator extends React.Component {
             <ul className='passList'>
               { passwords.map( (pass) => {
                 return <li key={pass.id} className='pass'>
-                  <h5>{pass.password}</h5>
-                  <CopyToClipboard onCopy={this.onCopy} text={result} >
-                    <button className='copy myButtonCopy listbutton' > #</button>
+                  <p>{pass.password}</p>
+                  <CopyToClipboard onCopy={this.onCopy} text={pass.password} >
+                    <button className='copy myButtonCopy listbutton' >
+                      <i className="fa fa-clipboard" aria-hidden="true"></i>
+                    </button>
                   </CopyToClipboard>
-                </li>; } )}
+                </li>;
+              } )}
             </ul>
           </div>
         }

@@ -6,6 +6,7 @@ const  Login = require('./api/login');
 const  Register = require('./api/register');
 const  Gener = require('./api/generator');
 const  ErrorHandler = require('./api/errorHandler');
+const  NewPassword = require('./api/addNewPassword');
 // Instantiating the express app
 // See the react auth blog in which cors is required for access
 app.use((req, res, next) => {
@@ -23,6 +24,8 @@ Login(app);
 Register(app);
 // GENERATOR'S VIEW ROUTE
 Gener(app);
+// CREATE NEW PASSWORD ITEM
+NewPassword(app);
 // Error Handler
 ErrorHandler(app);
 
