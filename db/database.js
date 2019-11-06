@@ -35,28 +35,28 @@ const UserModel = sequelize.define('user', {
   }
 });
 
-const PasswordList = sequelize.define('item', {
-  id: {
-    type: Sequelize.INTEGER,
-    autoIncrement: true,
-    primaryKey: true,
-    allowNull: false
-  },
-  title: {
-    type: Sequelize.STRING,
-    allowNull: false
-  },
-  value: {
-    type: Sequelize.STRING,
-    allowNull: false
-  }
-});
+// const PasswordList = sequelize.define('item', {
+//   id: {
+//     type: Sequelize.INTEGER,
+//     autoIncrement: true,
+//     primaryKey: true,
+//     allowNull: false
+//   },
+//   title: {
+//     type: Sequelize.STRING,
+//     allowNull: false
+//   },
+//   value: {
+//     type: Sequelize.STRING,
+//     allowNull: false
+//   }
+// });
 
-UserModel.hasMany(PasswordList);
-PasswordList.belongsTo(UserModel);
+// UserModel.hasMany(PasswordList);
+// PasswordList.belongsTo(UserModel);
 
 module.exports = UserModel;
-module.exports = PasswordList;
+// module.exports = PasswordList;
 
 
 
