@@ -43,13 +43,13 @@ class Generator extends React.Component {
   }
   callBackendAPIGet = async () => {
     const localToken = await sessionStorage.getItem('token');
-    const usernameS = await sessionStorage.getItem('userName');
-    console.log(usernameS);
+    const username = await sessionStorage.getItem('userName');
+    console.log(username);
 
     if(!localToken || this.state.reload === true ){
       this.props.history.push('/home');
     }
-    await axios.get('/gen', {headers: {key: localToken, username: usernameS}} )
+    await axios.get('/gen', {headers: {key: localToken, username: username}} )
       .then( (res) => {
         const user =  res.data.user;
         if(user){
