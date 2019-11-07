@@ -42,8 +42,8 @@ class Generator extends React.Component {
     await this.callBackendAPIGet();
   }
   callBackendAPIGet = async () => {
-    const localToken = sessionStorage.getItem('token');
-    const username = sessionStorage.getItem('userName');
+    const localToken = await sessionStorage.getItem('token');
+    const username = await sessionStorage.getItem('userName');
     if(!localToken || this.state.reload === true ){
       this.props.history.push('/home');
     }
