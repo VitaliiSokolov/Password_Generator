@@ -17,28 +17,33 @@ class App extends React.Component {
     super(props);
     this.callbackFunction = this.callbackFunction.bind(this);
     this.callbackFunctionUsername = this.callbackFunctionUsername.bind(this);
+    this.callbackFunctionUser = this.callbackFunctionUser.bind(this);
     this.state = {
       userName: '',
       logged: false,
+      user: {}
     };
   }
 
   callbackFunction = (childData) => {
-    sessionStorage.setItem('logged', childData);
-    this.setState({logged: childData});
+    console.log('logged', childData);
+    if(childData) {
+      this.setState({logged: true});
+    } else {
+      this.setState({logged: false});
+    }
   }
   callbackFunctionUsername = (childUserName) => {
     sessionStorage.setItem('userName', childUserName);
     this.setState({userName: childUserName});
   }
-  componentDidUpdate(){
-    // console.log(this.state.logged);
+  callbackFunctionUser = (childUser) => {
+    this.setState({user: childUser});
   }
 
   render() {
     const { userName, logged } = this.state;
     const token = sessionStorage.getItem('token');
-    const name = sessionStorage.getItem('userName');
     return (
       <div className='App'>
         <div className='header'>
@@ -64,11 +69,11 @@ class App extends React.Component {
             </Route>
 
             <Route path='/login'>
-              <Login name={userName} parentCallback = {this.callbackFunction}  parentCallbackUsername = {this.callbackFunctionUsername} />
+              <Login name={userName} parentCallback = {this.callbackFunction}  parentCallbackUsername = {this.callbackFunctionUsername}  parentCallbackUser={this.callbackFunctionUser}/>
             </Route>
 
             <Route path='/gen'>
-              <Generator parentCallback = {this.callbackFunction} name={name} image={logo} />
+              <Generator parentCallback = {this.callbackFunction}  image={logo}  />
             </Route>
 
             <Route path='/*' component={Error} />

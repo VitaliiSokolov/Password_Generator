@@ -1,4 +1,4 @@
-const UserModel = require('../db/database');
+const UserModel = require('../db/db-users');
 const Register = (server) => {
   // REGISTRATION ROUTE
   server.post('/register', async (req, res) => {
@@ -6,7 +6,7 @@ const Register = (server) => {
     let user = await UserModel.findOne({where: {email}});
     if(!user) {
       if(username && password){
-        UserModel.create({ username: username, email: email, password: password, })
+        await UserModel.create({ username: username, email: email, password: password, })
           .then(res=>{
             const user = {id: res.id, username: res.username, email: res.email, password: res.password};
             console.log(user);

@@ -15,6 +15,8 @@ class Generator extends React.Component {
     this.handleOnChangeMin = this.handleOnChangeMin.bind(this);
     this.handleOnChangeMax = this.handleOnChangeMax.bind(this);
     this.handleOnChangeSpecial = this.handleOnChangeSpecial.bind(this);
+    this.handleOnChangeTitle = this.handleOnChangeTitle.bind(this);
+    this.handleOnChangeValue = this.handleOnChangeValue.bind(this);
     this.state = {
       result: '',
       copied: false,
@@ -24,39 +26,44 @@ class Generator extends React.Component {
       min: 8,
       max: 16,
       special: false,
-      storage: true,
+      storage: false,
       storeList: [],
+      title: '',
+      value: '',
+      createPopup: false
     };
   }
   async componentDidMount(){
+    const localToken = sessionStorage.getItem('token');
+    if(!localToken && this.state.reload === true ){
+      console.log('redirect to /home');
+      this.props.history.push('/home');
+    }
     await this.callBackendAPIGet();
-    this.setState({name: sessionStorage.getItem('userName')});
   }
-  redirect = async () => {
-    await this.props.history.push('/home');
-  };
   callBackendAPIGet = async () => {
     const localToken = sessionStorage.getItem('token');
-    // const localToken = this.props.token;
-    await axios.get('/gen', {headers: {key: localToken}} )
+    const username = sessionStorage.getItem('userName');
+    if(!localToken || this.state.reload === true ){
+      this.props.history.push('/home');
+    }
+    await axios.get('/gen', {headers: {key: localToken, username}} )
       .then( (res) => {
-        // console.log(res);
-        this.setState({ name: this.props.name });
-        // console.log('local',localToken);
-        if(!localToken){
-          console.log('redirect');
-          this.props.history.push('/home');
+        const user =  res.data.user;
+        if(user){
+          this.setState({storeList: user.items, name: user.username});
         }
         return;
       })
       .catch((err) => { console.log(err); });
   };
   callBackendAPIPost = async () => {
-    const localToken = sessionStorage.getItem('token');
-    await axios.post('/gen', { headers: {key: localToken}, body: {username: this.state.name} } )
+    const userId = sessionStorage.getItem('userId');
+    await axios.post('/gen', { userId, title: this.state.title, value: this.state.value } )
       .then( (res) => {
-        console.log(res.data.message);
-        this.setState({ storeList: [] });
+        console.log(res);
+        this.setState({createPopup: !this.state.createPopup});
+        this.callBackendAPIGet();
         return;
       })
       .catch((err) => { console.log(err); });
@@ -98,12 +105,13 @@ class Generator extends React.Component {
     await this.setState({result: password, passwords: [...this.state.passwords, {id: this.state.passwords + 1, password}] });
   };
   // Logout from account
-  logout = () => {
+  logout = async() => {
     sessionStorage.removeItem('token');
     sessionStorage.removeItem('userName');
-    this.setState({reload: true});
+    sessionStorage.removeItem('userId');
+    this.setState({ reload: true });
     this.props.parentCallback(false);
-    this.callBackendAPIGet();
+    await this.callBackendAPIGet();
   }
   handleOnChangeMin = (e) => {
     const min = e.toString();
@@ -113,23 +121,25 @@ class Generator extends React.Component {
     const max = e.toString();
     this.setState({max});
   }
-  handleOnChangeSpecial = (e) => {
+  handleOnChangeSpecial = () => {
     this.setState({special: !this.state.special});
+  }
+  handleOnChangeTitle = (e) => {
+    const title = e.toString();
+    this.setState({title});
+  }
+  handleOnChangeValue = (e) => {
+    const value = e.toString();
+    this.setState({value});
   }
 
   render() {
-    let storeList = [
-      { name: 'Google', value: '0', position: 0 },
-      { name: 'Google', value: '1', position: 1 },
-      { name: 'Google', value: '2', position: 2 },
-      { name: 'Google', value: '3', position: 3 },
-      { name: 'Google', value: '4', position: 4 },
-    ];
-    const { result, passwords, special, storage } = this.state;
+    const { result, passwords, special, storage, storeList, name, createPopup } = this.state;
     return(
       <div className='generator'>
         <nav>
           <button className='myButtonSwitcher' onClick={ () => { this.setState({ ...this.state, storage: !storage }); } } >{!storage? 'Storage' : 'Generator'}</button>
+          {storage? <button className='createShowBtn' onClick={ () => { this.setState({createPopup: !createPopup}); } } >Create   <i className='fa fa-plus-circle' aria-hidden='true'></i></button> : null}
           <button className='copy logout myButtonLogout' onClick={ () => { this.logout(); } } >Logout</button>
         </nav>
         <div className='popup' ref={this.popupRef} >
@@ -137,17 +147,29 @@ class Generator extends React.Component {
         </div>
         {storage?
           <div className='store'>
+            <h1> Hello {name} </h1>
+            {createPopup?
+              <div className='createPopupWrapper'>
+                {/* <div className="close">
+                  <button className="closeBtn" onClick={ () => {this.setState({createPopup: !createPopup}); } } >X</button>
+                </div> */}
+                <div className='createPopup'>
+                  <input className='titleInput' type='text' placeholder='Title' onChange={ (e)=> {this.handleOnChangeTitle(e.target.value);} } />
+                  <input className='valueInput' type='text' placeholder='Value' onChange={ (e)=> {this.handleOnChangeValue(e.target.value);} } />
+                  <button className='gen create myButtonGen' onClick={ () => { this.callBackendAPIPost(); } } >
+                    Create   <i className='fa fa-plus-circle' aria-hidden='true'></i>
+                  </button>
+                </div>
+              </div>
+              : null}
             <ul className='storeList' >
-              <button className='gen create myButtonGen' onClick={ () => { this.callBackendAPIPost(); } } >
-                Create   <i className="fa fa-plus-circle" aria-hidden="true"></i>
-              </button>
-              {storeList.map( (item) => {
-                return <li className='profile' key={item.position}>
-                  <h3>{item.name} :</h3>
+              {storeList.map( (item, index) => {
+                return <li className='profile' key={index}>
+                  <h3>{item.title} :</h3>
                   <h5>{item.value}</h5>
                   <CopyToClipboard onCopy={this.onCopy} text={item.value} >
                     <button className='copy myButtonCopy listbutton' >
-                      <i className="fa fa-clipboard" aria-hidden="true"></i>
+                      <i className='fa fa-clipboard' aria-hidden='true'></i>
                     </button>
                   </CopyToClipboard>
                 </li>;
@@ -157,13 +179,13 @@ class Generator extends React.Component {
           :
           <div className='generate'>
             <div className='info'>
-              <h1> Hello {this.props.name} </h1>
+              <h1> Hello {name} </h1>
               <p className='text'> New Password: </p>
-              <div className="min-max">
-                <input className='inputMinMax' type="text" defaultValue={8} onChange={ (e)=> {this.handleOnChangeMin(e.target.value);} } />
-                <input className='inputMinMax' type="text" defaultValue={16} onChange={ (e)=> {this.handleOnChangeMax(e.target.value);} } />
-                <input type="checkbox" id="radioButton" placeholder='##' onChange={ (e)=> {this.handleOnChangeSpecial(e.target.value);} } />
-                <label htmlFor="radioButton"
+              <div className='min-max'>
+                <input className='inputMinMax' type='text' defaultValue={8} onChange={ (e)=> {this.handleOnChangeMin(e.target.value);} } />
+                <input className='inputMinMax' type='text' defaultValue={16} onChange={ (e)=> {this.handleOnChangeMax(e.target.value);} } />
+                <input type='checkbox' id='radioButton' placeholder='##' onChange={ (e)=> {this.handleOnChangeSpecial();} } />
+                <label htmlFor='radioButton'
                   className='radioButtonLabel'
                   style={special? {'color':'#006600'}:{'color':'#ff0000'}}
                 >Special</label>
@@ -182,7 +204,7 @@ class Generator extends React.Component {
                   <p>{pass.password}</p>
                   <CopyToClipboard onCopy={this.onCopy} text={pass.password} >
                     <button className='copy myButtonCopy listbutton' >
-                      <i className="fa fa-clipboard" aria-hidden="true"></i>
+                      <i className='fa fa-clipboard' aria-hidden='true'></i>
                     </button>
                   </CopyToClipboard>
                 </li>;

@@ -12,6 +12,7 @@ class SignIn extends React.Component {
     this.userNameRef =  React.createRef();
     this.state = {
       name: 'default name',
+      userId: '',
       login: 'wrong login',
       password: 'wrong password',
       token: 'empty token',
@@ -26,6 +27,10 @@ class SignIn extends React.Component {
     axios.post('/login', { username: login, password: password } )
       .then( (res) => {
         sessionStorage.setItem('token', res.data.token);
+        sessionStorage.setItem('userId', res.data.user.id);
+        // console.log(res.data.user);
+        const user = res.data.user;
+        this.props.parentCallbackUser(user);
         this.props.parentCallback(true);
         let data = res.config.data;
         data = JSON.parse(data);

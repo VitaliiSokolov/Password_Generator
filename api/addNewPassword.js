@@ -1,29 +1,26 @@
-const UserModel = require('../db/database');
+// const UserModel = require('../db/db-users');
+const PasswordList = require('../db/db-passwords');
 
 const NewPassword = async (server) => {
   // CREATE NEW PASSWORD
-  // server.post('/gen', async (req, res) => {
-  //   const { username, name, value } = req.body;
-  //   // const userList = await UserModel.findOne({where: { username, name, value}});
-  //   if ( req.body ) {
-  //     res.json({
-  //       sucess: true,
-  //       passList: [],
-  //       err: null,
-  //       message: 'New password saved'
-  //     });
-  //     console.log('New Password created');
-  //     return;
-  //   }
-  //   else {
-  //     console.log('Type error');
-  //     res.status(404).json({
-  //       sucess: false,
-  //       passList: null,
-  //       err: 'Name or password is incorrect'
-  //     });
-  //   }
-  // });
+  server.post('/gen', async (req, res) => {
+    const { userId, title, value } = req.body;
+    const newPassword = await PasswordList.create({ userId, title, value });
+    console.log(newPassword);
+    if(newPassword) {
+      res.json({
+        success: 'true',
+        err: null,
+        newPassword
+      });
+    } else {
+      res.status(400).json({
+        success: 'false',
+        error: 'Creating error',
+        newPassword: null
+      });
+    }
+  });
 };
 
 module.exports = NewPassword;
