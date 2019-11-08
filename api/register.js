@@ -1,4 +1,4 @@
-const UserModel = require('../db/db-users');
+const UserModel = require('../models/users');
 const Register = (server) => {
   // REGISTRATION ROUTE
   server.post('/register', async (req, res) => {

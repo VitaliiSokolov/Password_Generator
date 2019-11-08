@@ -1,5 +1,5 @@
-// const UserModel = require('../db/db-users');
-const PasswordList = require('../db/db-passwords');
+// const UserModel = require('../db/users');
+const PasswordList = require('../models/passwords');
 
 const NewPassword = async (server) => {
   // CREATE NEW PASSWORD

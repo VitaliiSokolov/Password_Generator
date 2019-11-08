@@ -1,5 +1,5 @@
-const UserModel = require('../db/db-users');
-const PasswordList = require('../db/db-passwords');
+const UserModel = require('../models/users');
+const PasswordList = require('../models/passwords');
 
 const Login = async (server) => {
   // LOGIN ROUTE
