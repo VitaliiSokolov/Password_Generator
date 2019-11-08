@@ -28,7 +28,7 @@ class Generator extends React.Component {
       storeList: [],
       copied: false,
       special: false,
-      storage: false,
+      storage: true,
       reload: false,
       createPopup: false
     };

@@ -1,3 +1,8 @@
+//sync database
+// sequelize.sync().then(result=>{
+//   console.log(result);
+// })
+//   .catch(err=> console.log(err));
 
 // create user
 // UserModel.create({
