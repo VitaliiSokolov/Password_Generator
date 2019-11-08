@@ -18,18 +18,18 @@ class Generator extends React.Component {
     this.handleOnChangeTitle = this.handleOnChangeTitle.bind(this);
     this.handleOnChangeValue = this.handleOnChangeValue.bind(this);
     this.state = {
-      result: '',
-      copied: false,
       name: 'User',
-      reload: false,
-      passwords: [],
-      min: 8,
-      max: 16,
-      special: false,
-      storage: false,
-      storeList: [],
       title: '',
       value: '',
+      result: '',
+      min: 8,
+      max: 16,
+      passwords: [],
+      storeList: [],
+      copied: false,
+      special: false,
+      storage: false,
+      reload: false,
       createPopup: false
     };
   }
@@ -44,8 +44,6 @@ class Generator extends React.Component {
   callBackendAPIGet = async () => {
     const localToken = await sessionStorage.getItem('token');
     const username = await sessionStorage.getItem('userName');
-    console.log(username);
-
     if(!localToken || this.state.reload === true ){
       this.props.history.push('/home');
     }
@@ -90,7 +88,12 @@ class Generator extends React.Component {
     let password = [];
     // Generating password's length
     // const length = Math.floor(Math.random() * (16 - 8) + 8);
-    const length = Math.random() * (max - min) + min;
+    let minimum = min;
+    let maximum = max;
+    console.log(min,max);
+    console.log(minimum,maximum);
+
+    const length = Math.random() * (maximum - minimum) + minimum;
     // Generating password's chars
     if(special){
       for (let i = 0; i < length; i++) {

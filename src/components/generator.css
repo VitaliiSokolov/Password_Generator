@@ -1,7 +1,7 @@
 .generator{
   margin: 0 auto;
   padding: 20px 10px;
-  width: 576px;
+  width: 556px;
   border-radius: 25px;
   display: flex;
   flex-direction: column;
@@ -85,7 +85,7 @@
   outline: none;
 }
 .passList {
-  max-height: 150px;
+  max-height: 300px;
   width: 100%;
   overflow-y: scroll;
   padding: 0;
@@ -228,7 +228,7 @@
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
-  height: 230px;
+  height: 460px;
   overflow-y: scroll;
 }
 .profile {
