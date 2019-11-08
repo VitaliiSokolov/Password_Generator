@@ -88,12 +88,8 @@ class Generator extends React.Component {
     let password = [];
     // Generating password's length
     // const length = Math.floor(Math.random() * (16 - 8) + 8);
-    let minimum = min;
-    let maximum = max;
-    console.log(min,max);
-    console.log(minimum,maximum);
 
-    const length = Math.random() * (maximum - minimum) + minimum;
+    const length = Math.random() * (max - min) + min;
     // Generating password's chars
     if(special){
       for (let i = 0; i < length; i++) {
@@ -119,12 +115,20 @@ class Generator extends React.Component {
     await this.callBackendAPIGet();
   }
   handleOnChangeMin = (e) => {
-    const min = e.toString();
-    this.setState({min});
+    const min = Number(e);
+    if(min > 0){
+      this.setState({min});
+    } else {
+      this.setState({min:8});
+    }
   }
   handleOnChangeMax = (e) => {
-    const max = e.toString();
-    this.setState({max});
+    const max = Number(e);
+    if(max < 38){
+      this.setState({max});
+    } else {
+      this.setState({max:16});
+    }
   }
   handleOnChangeSpecial = () => {
     this.setState({special: !this.state.special});
@@ -208,7 +212,7 @@ class Generator extends React.Component {
             <ul className='passList'>
               { passwords.map( (pass) => {
                 return <li key={pass.id} className='pass'>
-                  <p>{pass.password}</p>
+                  <p className='passResult'>{pass.password}</p>
                   <CopyToClipboard onCopy={this.onCopy} text={pass.password} >
                     <button className='copy myButtonCopy listbutton' >
                       <i className='fa fa-clipboard' aria-hidden='true'></i>

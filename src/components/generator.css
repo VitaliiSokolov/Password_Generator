@@ -283,6 +283,10 @@ nav {
   justify-content: space-between;
   margin-bottom: 20px;
 }
+.passResult {
+  width: 80%;
+  text-align: left;
+}
 .fa-clipboard {
   color: #000;
   font-size: 14px;

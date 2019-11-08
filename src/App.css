@@ -22,13 +22,12 @@ a{
 h4 {
   margin: 5px auto;
   color: #fff;
-  width: 240px;
 }
 .header {
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
-  width: 240px;
+  width: 576px;
   margin: 0 auto;
 }
 .logo {
