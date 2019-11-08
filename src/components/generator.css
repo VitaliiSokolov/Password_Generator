@@ -353,3 +353,9 @@ nav {
 /* .gen {
   margin: 10px auto 0;
 } */
+.cansel {
+	background:#be360d;
+}
+.cansel:hover {
+	background:#f10606;
+}

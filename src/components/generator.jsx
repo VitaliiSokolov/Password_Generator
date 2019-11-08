@@ -140,8 +140,10 @@ class Generator extends React.Component {
     return(
       <div className='generator'>
         <nav>
-          <button className='myButtonSwitcher' onClick={ () => { this.setState({ ...this.state, storage: !storage }); } } >{!storage? 'Storage' : 'Generator'}</button>
-          {storage? <button className='createShowBtn' onClick={ () => { this.setState({createPopup: !createPopup}); } } >Create   <i className='fa fa-plus-circle' aria-hidden='true'></i></button> : null}
+          <button className='myButtonSwitcher' onClick={ () => { this.setState({ ...this.state, storage: !storage, createPopup: false }); } } >{!storage? 'Storage' : 'Generator'}</button>
+          {storage? <button className={!createPopup? 'createShowBtn' : 'createShowBtn cansel'} onClick={ () => { this.setState({createPopup: !createPopup}); } } >
+            {!createPopup? 'Create' : 'Cancel'}   <i className='fa fa-plus-circle' aria-hidden='true'></i>
+          </button> : null}
           <button className='copy logout myButtonLogout' onClick={ () => { this.logout(); } } >Logout</button>
         </nav>
         <div className='popup' ref={this.popupRef} >
