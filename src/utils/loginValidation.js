@@ -1,10 +1,9 @@
 const joi = require('joi');
 
-const regValidate = ( login, password, email ) => {
-  const data = { login, password, email };
+const loginValidate = ( login, password ) => {
+  const data = { login, password };
   const schema = joi.object().keys({
     login: joi.string().min(4).required(),
-    email: joi.string().email().lowercase().required(),
     password: joi.string().min(4).required(),
   });
   let response = [ '', false, false, false];
@@ -14,20 +13,21 @@ const regValidate = ( login, password, email ) => {
       formattedMessage = formattedMessage.split('[');
       formattedMessage = formattedMessage[1].split(']');
       response[0] = formattedMessage[0];
-      console.log(response[0]);
+      console.log(formattedMessage);
+
       let current = err.message.split('\"');
       if(current[1] == 'login') {
         response[1] = true;
-      } else if(current[1] == 'email') {
-        response[2] = true;
-      } else if(current[1] == 'password') {
-        response[3] = true;
       }
-    } else {
-      console.log(response);
+      else if(current[1] == 'password') {
+        response[2] = true;
+      }
+      else {
+        console.log(response);
+      }
     }
   });
   return response;
 };
 
-module.exports = regValidate;
+module.exports = loginValidate;
