@@ -95,9 +95,7 @@ class Generator extends React.Component {
   // Generating password
   generate = async () => {
     const { min, max, special } = this.state;
-    const difference = max - min;
-    console.log(difference);
-    const password = await generating(min, max, special, difference);
+    const password = await generating( min, max, special );
     if(password[1].length > 1) {
       await this.setState({
         result: password[1],

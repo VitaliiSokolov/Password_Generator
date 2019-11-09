@@ -1,15 +1,13 @@
 const joi = require('joi');
 
-const generating = (min, max, special,difference ) => {
-  const data = {min, max, special, difference};
+const generating = ( min, max, special ) => {
+  const data = { min, max, special };
   let password = [];
   let result = [ '', '' ];
   const schema = joi.object().keys({
-    min: joi.number().positive().min(3).max(37),
-    max: joi.number().positive().min(3).max(37),
-    // difference: joi.validate(min < max),
+    min: joi.number().positive().min(3).max(37).required(),
+    max: joi.number().positive().min(3).max(37).greater(joi.ref('min')).required() ,
     special: joi.boolean(),
-    difference: joi.number().positive().min(1)
   });
 
   joi.validate( data, schema, ( err ) => {

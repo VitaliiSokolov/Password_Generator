@@ -2,6 +2,7 @@ import React from 'react';
 import './sign-in.scss';
 import { withRouter } from 'react-router-dom';
 const axios = require('axios');
+const regValidate = require('../utils/regValidation');
 class SignIn extends React.Component {
   constructor(props) {
     super(props);
@@ -22,32 +23,26 @@ class SignIn extends React.Component {
   callBackendAPI = async (e) => {
     e.preventDefault();
     const { login, password, email } = this.state;
-
-    if(login.trim() === '' && password.trim() === ''){
-      if(password.length <5 || login.length <2) {
-        this.setState({errorMessage: 'Login or Password is too short!', inputValidationLogin: true, inputValidationPassword: true});
-      }
-      return;
-    } else if(login && password) {
-      this.setState({inputValidationLogin: false, inputValidationEmail: false, inputValidationPassword: false});
+    const responseArray = await regValidate( login, password, email );
+    this.setState({inputValidationLogin: responseArray[1], inputValidationEmail: responseArray[2], inputValidationPassword: responseArray[3]});
+    if(responseArray[0].length < 1) {
+      await axios.post('/register', { username: login, email, password } )
+        .then( (res) => {
+          console.log(res);
+          this.setState({errorMessage: ''});
+          let poppupElement = this.popupRef.current;
+          poppupElement.classList.add('active');
+          const hidden = () => {
+            poppupElement.classList.remove('active');
+            this.props.history.push('/login');
+          };
+          setTimeout(hidden, 2500);
+        })
+        .catch( (error) => {
+          console.log(error);
+          this.setState({errorMessage: 'User with these Login/Email alredy exists', inputValidationLogin: true, inputValidationEmail: true});
+        });
     }
-
-    await axios.post('/register', { username: login, email, password } )
-      .then( (res) => {
-        console.log(res);
-        this.setState({errorMessage: ''});
-        let poppupElement = this.popupRef.current;
-        poppupElement.classList.add('active');
-        const hidden = () => {
-          poppupElement.classList.remove('active');
-          this.props.history.push('/login');
-        };
-        setTimeout(hidden, 2500);
-      })
-      .catch( (error) => {
-        console.log(error);
-        this.setState({errorMessage: 'User with these Login/Email alredy exists', inputValidationLogin: true, inputValidationEmail: true});
-      });
   };
   handleOnChangeUser = (e) => {
     this.setState({login: e});
