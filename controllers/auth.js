@@ -1,11 +1,12 @@
-const Login = require('../services/login');
-const Register = require('../services/register');
+const Login = require('../routes/login');
+const Register = require('../routes/register');
 
 const Auth = async (server) => {
   try {
     await Login(server);
     await Register(server);
-  } catch(error){
+  }
+  catch(error){
     console.log(error);
   }
 };

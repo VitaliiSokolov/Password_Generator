@@ -1,9 +1,10 @@
-const addNewPassword = require('../services/addNewPassword');
+const addNewPassword = require('../routes/addNewPassword');
 
 const Passwords = async (server) => {
   try{
     addNewPassword(server);
-  } catch(error) {
+  }
+  catch(error) {
     console.log(error);
   }
 };

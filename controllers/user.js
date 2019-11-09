@@ -1,9 +1,10 @@
-const getuser = require('../services/getUser');
+const getuser = require('../routes/getUser');
 
 const User = async (server) => {
   try {
     await getuser(server);
-  } catch(error) {
+  }
+  catch(error) {
     console.log(error);
   }
 };

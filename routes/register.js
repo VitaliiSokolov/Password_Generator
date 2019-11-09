@@ -1,6 +1,7 @@
 const {  UserModel } = require('../models/index');
-const { checkEmail } = require('../services/databaseServices/checkEmail');
-const { createUser } = require('../services/databaseServices/createUser');
+const { checkEmail } = require('../services/checkEmail');
+const { createUser } = require('../services/createUser');
+// const errorHandler = require('../services/errorHandler');
 
 // REGISTRATION ROUTE
 const Register = (server) => {
@@ -15,18 +16,18 @@ const Register = (server) => {
             console.log(user);
           })
           .catch(err=>console.log(err));
-        res.json({
+        res.send({
           username,
           email,
           password,
         });
       } else {
-        res.status(400).json({
+        res.status(400).send({
           error: 'Registration Declined: Username and password are empty'
         });
       }
     } else {
-      res.status(400).json({
+      res.status(400).send({
         error: 'Registration Declined: User already exist'
       });
     }

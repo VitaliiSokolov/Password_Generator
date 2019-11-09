@@ -1,5 +1,6 @@
 const { passwordModel, UserModel } = require('../models/index');
-const { getUser } = require('../services/databaseServices/findUser');
+const { getUser } = require('../services/findUser');
+// const errorHandler = require('../services/errorHandler');
 
 // GENERATOR'S VIEW ROUTE
 const User = (server) => {
@@ -7,7 +8,6 @@ const User = (server) => {
     const { username, key } = req.headers;
     const user = await getUser(username, UserModel, passwordModel);
     if( key === 'Govno'){
-      res.setHeader('Cache-Control', 'private');
       res.send({
         user
       });
