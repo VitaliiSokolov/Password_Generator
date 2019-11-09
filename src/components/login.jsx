@@ -1,6 +1,6 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import './login.css';
+import './login.scss';
 const axios = require('axios');
 
 class SignIn extends React.Component {

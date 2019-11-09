@@ -1,8 +1,10 @@
 import React from 'react';
-import './generator.css';
+import './generator.scss';
 import { withRouter } from 'react-router-dom';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 const axios = require('axios');
+const joi = require('joi');
+const generating = require('../utils/generate');
 class Generator extends React.Component {
   constructor(props) {
     super(props);
@@ -17,56 +19,68 @@ class Generator extends React.Component {
     this.handleOnChangeSpecial = this.handleOnChangeSpecial.bind(this);
     this.handleOnChangeTitle = this.handleOnChangeTitle.bind(this);
     this.handleOnChangeValue = this.handleOnChangeValue.bind(this);
+    this.createPass = this.createPass.bind(this);
     this.state = {
       name: 'User',
       title: '',
       value: '',
       result: '',
-      min: 8,
-      max: 16,
+      min_max_err: '',
+      min: 0,
+      max: 0,
       passwords: [],
       storeList: [],
       copied: false,
       special: false,
-      storage: true,
+      storage: false,
       reload: false,
       createPopup: false
     };
   }
   async componentDidMount(){
-    const localToken = sessionStorage.getItem('token');
+    const localToken = await sessionStorage.getItem('token');
     if(!localToken && this.state.reload === true ){
       console.log('redirect to /home');
       this.props.history.push('/home');
     }
     await this.callBackendAPIGet();
   }
+  // GetUser
   callBackendAPIGet = async () => {
     const localToken = await sessionStorage.getItem('token');
     const username = await sessionStorage.getItem('userName');
-    if(!localToken || this.state.reload === true ){
+    if(!localToken){
       this.props.history.push('/home');
     }
-    await axios.get('/gen', {headers: {key: localToken, username: username}} )
+    await axios.get('/gen', { headers: { key: localToken, username }} )
       .then( (res) => {
         const user =  res.data.user;
         if(user){
-          this.setState({storeList: user.items, name: user.username});
+          this.setState({ storeList: user.items, name: user.username });
         }
         return;
       })
-      .catch((err) => { console.log(err); });
+      .catch((err) => {
+        console.log(err);
+        return err;
+      });
   };
+  // Record new password
   callBackendAPIPost = async () => {
     const userId = sessionStorage.getItem('userId');
-    await axios.post('/gen', { userId, title: this.state.title, value: this.state.value } )
+    const { title, value, createPopup } = this.state;
+    await axios.post('/gen', { userId, title, value } )
       .then( (res) => {
-        console.log(res);
-        this.setState({createPopup: !this.state.createPopup});
+        const newPassword = res.data.newPassword;
+        console.log('Created', newPassword);
+        this.setState({ createPopup: !createPopup });
         this.callBackendAPIGet();
         return;
       })
-      .catch((err) => { console.log(err); });
+      .catch((err) => {
+        console.log(err);
+        return err;
+      });
   }
   // React-Copy-to-Clipboard
   onCopy = () => {
@@ -76,35 +90,40 @@ class Generator extends React.Component {
     const hidden = () => {
       poppupElement.classList.remove('active');
     };
-    // Hidding popup
     setTimeout(hidden, 500);
-    // console.log('Password coppied');
   };
   // Generating password
   generate = async () => {
     const { min, max, special } = this.state;
-    let characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    let extentendedCharacters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+~`|}{[]:;?><,./-=';
-    let password = [];
-    // Generating password's length
-    // const length = Math.floor(Math.random() * (16 - 8) + 8);
-
-    const length = Math.random() * (max - min) + min;
-    // Generating password's chars
-    if(special){
-      for (let i = 0; i < length; i++) {
-        const genChar = Math.floor(Math.random() * 91);
-        password.push(extentendedCharacters[genChar]);
-      }
+    const difference = max - min;
+    console.log(difference);
+    const password = await generating(min, max, special, difference);
+    if(password[1].length > 1) {
+      await this.setState({
+        result: password[1],
+        min_max_err: password[0],
+        passwords: [...this.state.passwords,
+          {id: this.state.passwords + 1,
+            password: password[1]
+          }]
+      });
     } else {
-      for (let i = 0; i < length; i++) {
-        const genChar = Math.floor(Math.random() * 68);
-        password.push(characters[genChar]);
-      }
+      await this.setState({
+        min_max_err: password[0],
+      });
     }
-    password = password.join('');
-    await this.setState({result: password, passwords: [...this.state.passwords, {id: this.state.passwords + 1, password}] });
   };
+  // Create password
+  // ????????? first time works good, then repeats the same result ????????
+  createPass = async () => {
+    const val = await this.state.value.replace(/\s/g, '');
+    if(val === ''){
+      const { min, max, special } = this.state;
+      const password = generating(min, max, special);
+      this.setState({ value: password });
+    }
+    this.callBackendAPIPost();
+  }
   // Logout from account
   logout = async() => {
     sessionStorage.removeItem('token');
@@ -114,6 +133,7 @@ class Generator extends React.Component {
     this.props.parentCallback(false);
     await this.callBackendAPIGet();
   }
+  // setState inputs onChange
   handleOnChangeMin = (e) => {
     const min = Number(e);
     if(min > 0){
@@ -143,7 +163,7 @@ class Generator extends React.Component {
   }
 
   render() {
-    const { result, passwords, special, storage, storeList, name, createPopup } = this.state;
+    const { result, passwords, special, storage, storeList, name, createPopup, min_max_err } = this.state;
     return(
       <div className='generator'>
         <nav>
@@ -161,13 +181,10 @@ class Generator extends React.Component {
             <h1> Hello {name} </h1>
             {createPopup?
               <div className='createPopupWrapper'>
-                {/* <div className="close">
-                  <button className="closeBtn" onClick={ () => {this.setState({createPopup: !createPopup}); } } >X</button>
-                </div> */}
                 <div className='createPopup'>
                   <input className='titleInput' type='text' placeholder='Title' onChange={ (e)=> {this.handleOnChangeTitle(e.target.value);} } />
                   <input className='valueInput' type='text' placeholder='Value' onChange={ (e)=> {this.handleOnChangeValue(e.target.value);} } />
-                  <button className='gen create myButtonGen' onClick={ () => { this.callBackendAPIPost(); } } >
+                  <button className='create myButtonGen' onClick={ () => { this.createPass(); } } >
                     Create   <i className='fa fa-plus-circle' aria-hidden='true'></i>
                   </button>
                 </div>
@@ -175,7 +192,7 @@ class Generator extends React.Component {
               : null}
             <ul className='storeList' >
               {storeList.map( (item, index) => {
-                return <li className='profile' key={index}>
+                return (<li className='profile' key={index}>
                   <h3>{item.title} :</h3>
                   <h5>{item.value}</h5>
                   <CopyToClipboard onCopy={this.onCopy} text={item.value} >
@@ -183,8 +200,9 @@ class Generator extends React.Component {
                       <i className='fa fa-clipboard' aria-hidden='true'></i>
                     </button>
                   </CopyToClipboard>
-                </li>;
-              } )}
+                </li>
+                );
+              })}
             </ul>
           </div>
           :
@@ -193,13 +211,14 @@ class Generator extends React.Component {
               <h1> Hello {name} </h1>
               <p className='text'> New Password: </p>
               <div className='min-max'>
-                <input className='inputMinMax' type='text' defaultValue={8} onChange={ (e)=> {this.handleOnChangeMin(e.target.value);} } />
-                <input className='inputMinMax' type='text' defaultValue={16} onChange={ (e)=> {this.handleOnChangeMax(e.target.value);} } />
-                <input type='checkbox' id='radioButton' placeholder='##' onChange={ (e)=> {this.handleOnChangeSpecial();} } />
+                <input className='inputMinMax' type='text'  onChange={ (e)=> {this.handleOnChangeMin(e.target.value);} } />
+                <input className='inputMinMax' type='text'  onChange={ (e)=> {this.handleOnChangeMax(e.target.value);} } />
+                <input type='checkbox' id='radioButton' placeholder='##' onChange={ (e)=> {this.handleOnChangeSpecial(e);} } />
                 <label htmlFor='radioButton'
                   className='radioButtonLabel'
                   style={special? {'color':'#006600'}:{'color':'#ff0000'}}
                 >Special</label>
+                <p className='min_max_err' > {min_max_err} </p>
               </div>
               <code className='result' ref={this.passwordRef}>{result}</code>
             </div>
@@ -211,15 +230,16 @@ class Generator extends React.Component {
             </div>
             <ul className='passList'>
               { passwords.map( (pass) => {
-                return <li key={pass.id} className='pass'>
+                return (<li key={pass.id} className='pass'>
                   <p className='passResult'>{pass.password}</p>
                   <CopyToClipboard onCopy={this.onCopy} text={pass.password} >
                     <button className='copy myButtonCopy listbutton' >
                       <i className='fa fa-clipboard' aria-hidden='true'></i>
                     </button>
                   </CopyToClipboard>
-                </li>;
-              } )}
+                </li>
+                );
+              })}
             </ul>
           </div>
         }
