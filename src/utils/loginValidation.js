@@ -13,8 +13,6 @@ const loginValidate = ( login, password ) => {
       formattedMessage = formattedMessage.split('[');
       formattedMessage = formattedMessage[1].split(']');
       response[0] = formattedMessage[0];
-      console.log(formattedMessage);
-
       let current = err.message.split('\"');
       if(current[1] == 'login') {
         response[1] = true;

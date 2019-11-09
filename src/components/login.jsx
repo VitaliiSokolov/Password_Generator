@@ -28,7 +28,8 @@ class SignIn extends React.Component {
   }
   callBackendAPI = async (e) => {
     e.preventDefault();
-    const { login, password, validation} = this.state;
+    const { login, password } = this.state;
+    this.setState({ validation: false, passValidation: false, serverValidation: false });
     const responseArray = await loginValidate(login, password);
     this.setState({ errorMessage: responseArray[0], logValidation: responseArray[1], passValidation: responseArray[2] });
 
