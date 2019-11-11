@@ -136,7 +136,10 @@ class Generator extends React.Component {
     sessionStorage.removeItem('userId');
     this.setState({ reload: true });
     this.props.parentCallback(false);
-    await this.callBackendAPIGet();
+    // switched this
+    this.props.history.push('/home');
+    // switched
+    // this.callBackendAPIGet();
   }
   // setState inputs onChange
   handleOnChangeMin = (e) => {
