@@ -3,6 +3,8 @@ import './sign-in.scss';
 import { withRouter } from 'react-router-dom';
 const axios = require('axios');
 const regValidate = require('../utils/regValidation');
+const { encrypt } = require('../utils/encrypter');
+
 class SignIn extends React.Component {
   constructor(props) {
     super(props);
@@ -26,7 +28,10 @@ class SignIn extends React.Component {
     const responseArray = await regValidate( login, password, email );
     this.setState({inputValidationLogin: responseArray[1], inputValidationEmail: responseArray[2], inputValidationPassword: responseArray[3]});
     if(responseArray[0].length < 1) {
-      await axios.post('/register', { username: login, email, password } )
+      const cryptedLogin = encrypt(login);
+      const cryptedEmail = encrypt(email);
+      const cryptedPassword = encrypt(password);
+      await axios.post('/register', { username: cryptedLogin, email: cryptedEmail, password: cryptedPassword } )
         .then( (res) => {
           console.log(res);
           this.setState({errorMessage: ''});

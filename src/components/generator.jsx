@@ -3,8 +3,8 @@ import './generator.scss';
 import { withRouter } from 'react-router-dom';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 const axios = require('axios');
-const joi = require('joi');
 const generating = require('../utils/generate');
+const { encrypt, decrypt } = require('../utils/encrypter');
 class Generator extends React.Component {
   constructor(props) {
     super(props);
@@ -54,9 +54,10 @@ class Generator extends React.Component {
     }
     await axios.get('/gen', { headers: { key: localToken, username }} )
       .then( (res) => {
-        const user =  res.data.user;
+        const user = res.data.user;
+        const decryptedName = decrypt(user.username);
         if(user){
-          this.setState({ storeList: user.items, name: user.username });
+          this.setState({ storeList: user.items, name: decryptedName });
         }
         return;
       })
@@ -69,7 +70,9 @@ class Generator extends React.Component {
   callBackendAPIPost = async () => {
     const userId = sessionStorage.getItem('userId');
     const { title, value, createPopup } = this.state;
-    await axios.post('/gen', { userId, title, value } )
+    const cryptedTitle = encrypt(title);
+    const cryptedValue = encrypt(value);
+    await axios.post('/gen', { userId, title: cryptedTitle, value: cryptedValue } )
       .then( (res) => {
         const newPassword = res.data.newPassword;
         console.log('Created', newPassword);
@@ -190,9 +193,11 @@ class Generator extends React.Component {
               : null}
             <ul className='storeList' >
               {storeList.map( (item, index) => {
+                let decryptedTitle = decrypt(item.title);
+                let decryptedValue = decrypt(item.value);
                 return (<li className='profile' key={index}>
-                  <h3>{item.title} :</h3>
-                  <h5>{item.value}</h5>
+                  <h3>{decryptedTitle} :</h3>
+                  <h5>{decryptedValue}</h5>
                   <CopyToClipboard onCopy={this.onCopy} text={item.value} >
                     <button className='copy myButtonCopy listbutton' >
                       <i className='fa fa-clipboard' aria-hidden='true'></i>
