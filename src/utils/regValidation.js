@@ -14,7 +14,6 @@ const regValidate = ( login, password, email ) => {
       formattedMessage = formattedMessage.split('[');
       formattedMessage = formattedMessage[1].split(']');
       response[0] = formattedMessage[0];
-      console.log(response[0]);
       let current = err.message.split('\"');
       if(current[1] == 'login') {
         response[1] = true;
@@ -24,7 +23,7 @@ const regValidate = ( login, password, email ) => {
         response[3] = true;
       }
     } else {
-      console.log(response);
+      console.log('Error null');
     }
   });
   return response;

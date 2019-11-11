@@ -3,7 +3,6 @@ import { withRouter } from 'react-router-dom';
 import './login.scss';
 const axios = require('axios');
 const loginValidate = require('../utils/loginValidation');
-const { encrypt } = require('../utils/encrypter');
 class SignIn extends React.Component {
   constructor(props) {
     super(props);
@@ -31,11 +30,8 @@ class SignIn extends React.Component {
     this.setState({ validation: false, passValidation: false, serverValidation: false });
     const responseArray = await loginValidate(login, password);
     this.setState({ errorMessage: responseArray[0], logValidation: responseArray[1], passValidation: responseArray[2] });
-
     if(responseArray[0].length < 1) {
-      const cryptedLogin = encrypt(login);
-      const cryptedPassword = encrypt(password);
-      axios.post('/login', { username: cryptedLogin, password: cryptedPassword } )
+      axios.post('/login', { username: login, password } )
         .then( (res) => {
           sessionStorage.setItem('token', res.data.token);
           sessionStorage.setItem('userId', res.data.user.id);

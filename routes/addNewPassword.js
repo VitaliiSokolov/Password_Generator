@@ -7,6 +7,8 @@ const { createPassword } = require('../services/createPassword');
 const NewPassword = async (server) => {
   server.post('/gen', async (req, res) => {
     const newPassword = await createPassword(req.body, passwordModel);
+    console.log(newPassword, 'SSSSSSSSSSSSSS');
+
     if(newPassword) {
       res.send({
         newPassword

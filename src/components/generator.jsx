@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 const axios = require('axios');
 const generating = require('../utils/generate');
-const { encrypt, decrypt } = require('../utils/encrypter');
+const createPassValidation = require('../utils/createPassValidation');
 class Generator extends React.Component {
   constructor(props) {
     super(props);
@@ -26,15 +26,16 @@ class Generator extends React.Component {
       value: '',
       result: '',
       min_max_err: '',
+      createPopupMessage: '',
       min: 0,
       max: 0,
       passwords: [],
       storeList: [],
       copied: false,
       special: false,
-      storage: false,
+      storage: true,
       reload: false,
-      createPopup: false
+      createPopup: false,
     };
   }
   async componentDidMount(){
@@ -53,11 +54,11 @@ class Generator extends React.Component {
       this.props.history.push('/home');
     }
     await axios.get('/gen', { headers: { key: localToken, username }} )
-      .then( (res) => {
+      .then( async (res) => {
+        console.log(res);
         const user = res.data.user;
-        const decryptedName = decrypt(user.username);
         if(user){
-          this.setState({ storeList: user.items, name: decryptedName });
+          this.setState({ storeList: user.items, name: user.username });
         }
         return;
       })
@@ -70,20 +71,23 @@ class Generator extends React.Component {
   callBackendAPIPost = async () => {
     const userId = sessionStorage.getItem('userId');
     const { title, value, createPopup } = this.state;
-    const cryptedTitle = encrypt(title);
-    const cryptedValue = encrypt(value);
-    await axios.post('/gen', { userId, title: cryptedTitle, value: cryptedValue } )
-      .then( (res) => {
-        const newPassword = res.data.newPassword;
-        console.log('Created', newPassword);
-        this.setState({ createPopup: !createPopup });
-        this.callBackendAPIGet();
-        return;
-      })
-      .catch((err) => {
-        console.log(err);
-        return err;
-      });
+    const responseArray = await createPassValidation(title, value);
+    this.setState({ createPopupMessage: responseArray[0] });
+    if(responseArray[0].length < 1) {
+      await axios.post('/gen', { userId, title, value } )
+        .then( (res) => {
+          console.log(res);
+          const newPassword = res.data.newPassword;
+          console.log('Created', newPassword);
+          this.setState({ createPopup: !createPopup });
+          this.callBackendAPIGet();
+          return;
+        })
+        .catch((err) => {
+          console.log(err);
+          return err;
+        });
+    }
   }
   // React-Copy-to-Clipboard
   onCopy = () => {
@@ -164,7 +168,7 @@ class Generator extends React.Component {
   }
 
   render() {
-    const { result, passwords, special, storage, storeList, name, createPopup, min_max_err } = this.state;
+    const { result, passwords, special, storage, storeList, name, createPopup, min_max_err, createPopupMessage } = this.state;
     return(
       <div className='generator'>
         <nav>
@@ -185,6 +189,7 @@ class Generator extends React.Component {
                 <div className='createPopup'>
                   <input className='titleInput' type='text' placeholder='Title' onChange={ (e)=> {this.handleOnChangeTitle(e.target.value);} } />
                   <input className='valueInput' type='text' placeholder='Value' onChange={ (e)=> {this.handleOnChangeValue(e.target.value);} } />
+                  <p className='createPopupMessage'>{createPopupMessage}</p>
                   <button className='create myButtonGen' onClick={ () => { this.createPass(); } } >
                     Create   <i className='fa fa-plus-circle' aria-hidden='true'></i>
                   </button>
@@ -193,11 +198,9 @@ class Generator extends React.Component {
               : null}
             <ul className='storeList' >
               {storeList.map( (item, index) => {
-                let decryptedTitle = decrypt(item.title);
-                let decryptedValue = decrypt(item.value);
                 return (<li className='profile' key={index}>
-                  <h3>{decryptedTitle} :</h3>
-                  <h5>{decryptedValue}</h5>
+                  <h3>{item.title} :</h3>
+                  <h5>{item.value}</h5>
                   <CopyToClipboard onCopy={this.onCopy} text={item.value} >
                     <button className='copy myButtonCopy listbutton' >
                       <i className='fa fa-clipboard' aria-hidden='true'></i>

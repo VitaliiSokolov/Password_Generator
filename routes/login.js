@@ -9,7 +9,7 @@ const Login = async (server) => {
     if ( user ) {
       let token = 'Govno';
       res.send({
-        user,
+        user: user,
         token
       });
       console.log('Token sent');

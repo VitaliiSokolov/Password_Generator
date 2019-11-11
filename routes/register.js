@@ -1,5 +1,5 @@
 const {  UserModel } = require('../models/index');
-const { checkEmail } = require('../services/checkEmail');
+const { checkEmailLogin } = require('../services/checkEmailLogin');
 const { createUser } = require('../services/createUser');
 // const errorHandler = require('../services/errorHandler');
 
@@ -7,8 +7,10 @@ const { createUser } = require('../services/createUser');
 const Register = (server) => {
   server.post('/register', async (req, res) => {
     const { username, password, email } = req.body;
-    const user = await checkEmail(req.body, UserModel);
-    if(!user) {
+    const user = await checkEmailLogin(username, email, UserModel);
+    console.log(user, 'SSSS');
+
+    if(user === null) {
       if(username && password){
         await createUser(req.body, UserModel)
           .then(res=>{
