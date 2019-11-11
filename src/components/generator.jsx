@@ -5,6 +5,7 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 const axios = require('axios');
 const generating = require('../utils/generate');
 const createPassValidation = require('../utils/createPassValidation');
+
 class Generator extends React.Component {
   constructor(props) {
     super(props);
@@ -48,14 +49,14 @@ class Generator extends React.Component {
   }
   // GetUser
   callBackendAPIGet = async () => {
-    const localToken = await sessionStorage.getItem('token');
+    let localToken = await sessionStorage.getItem('token');
+    localToken = 'Bearer ' + localToken;
     const username = await sessionStorage.getItem('userName');
     if(!localToken){
       this.props.history.push('/home');
     }
-    await axios.get('/gen', { headers: { key: localToken, username }} )
+    await axios.get('/gen', { headers: { Authorization: localToken, username }} )
       .then( async (res) => {
-        console.log(res);
         const user = res.data.user;
         if(user){
           this.setState({ storeList: user.items, name: user.username });

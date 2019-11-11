@@ -1,5 +1,6 @@
 const { passwordModel, UserModel } = require('../models/index');
 const { login } = require('../services/login');
+const generateToken = require('../utils/token');
 // const errorHandler = require('../services/errorHandler');
 
 const Login = async (server) => {
@@ -7,7 +8,7 @@ const Login = async (server) => {
   server.post('/login', async (req, res) => {
     const user = await login(req.body, UserModel, passwordModel);
     if ( user ) {
-      let token = 'Govno';
+      let token = generateToken(user);
       res.send({
         user: user,
         token
