@@ -1,15 +1,13 @@
-const {  UserModel } = require('../models/index');
-const { checkEmailLogin } = require('../services/checkEmailLogin');
-const { createUser } = require('../services/createUser');
-// const errorHandler = require('../services/errorHandler');
+const { passwordModel, UserModel } = require('../models/index');
+const { login, checkEmailLogin } = require('../services/authService');
+const { createUser } = require('../services/userService');
+const generateToken = require('../utils/token');
 
 // REGISTRATION ROUTE
 const Register = (server) => {
-  server.post('/register', async (req, res) => {
+  server.post('/auth/register', async (req, res) => {
     const { username, password, email } = req.body;
     const user = await checkEmailLogin(username, email, UserModel);
-    console.log(user, 'SSSS');
-
     if(user === null) {
       if(username && password){
         await createUser(req.body, UserModel)
@@ -36,4 +34,28 @@ const Register = (server) => {
   });
 };
 
-module.exports = Register;
+const Login = async (server) => {
+  // LOGIN ROUTE
+  server.post('/auth/login', async (req, res) => {
+    const user = await login(req.body, UserModel, passwordModel);
+    if ( user ) {
+      let token = generateToken(user);
+      res.send({
+        user: user,
+        token
+      });
+      console.log('Token sent');
+      return;
+    }
+    else {
+      console.log('Unauthorized');
+      res.status(404).send({
+        err: 'Username or password is incorrect'
+      });
+    }
+  });
+};
+
+module.exports = {
+  Register, Login
+};

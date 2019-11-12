@@ -60,19 +60,19 @@ class App extends React.Component {
           <Route exact path='/' render={() => (<Redirect to='/home' />)} />
           <Switch>
             <Route path='/home'>
-              {!token && !logged ? <Link to='/register' className='log-button'> <h4>Register new account</h4> </Link>:null }
-              {token && !logged ? <Link to='/gen' className='log-button'> <h4> Generator</h4> </Link> : <Link to='/login' className='log-button'> <h4>Login to account</h4> </Link> }
+              {!token && !logged ? <Link to='/auth/register' className='log-button'> <h4>Register new account</h4> </Link>:null }
+              {token && !logged ? <Link to='/user' className='log-button'> <h4> Generator</h4> </Link> : <Link to='/auth/login' className='log-button'> <h4>Login to account</h4> </Link> }
             </Route>
 
-            <Route path='/register'>
+            <Route path='/auth/register'>
               <SignIn/>
             </Route>
 
-            <Route path='/login'>
+            <Route path='/auth/login'>
               <Login name={userName} parentCallback = {this.callbackFunction}  parentCallbackUsername = {this.callbackFunctionUsername}  parentCallbackUser={this.callbackFunctionUser}/>
             </Route>
 
-            <Route path='/gen'>
+            <Route path='/user'>
               <Generator parentCallback = {this.callbackFunction}  image={logo}  />
             </Route>
 

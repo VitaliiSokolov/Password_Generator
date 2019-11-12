@@ -1,7 +1,15 @@
 const { encrypt, decrypt } = require('../utils/encrypter');
 
-const findUser = async (username, userModel, passwordModel) => {
+const createUser = (body, userModel) => {
+  const { username, password, email } = body;
+  const encrUsername = encrypt(username);
+  const encrEmail = encrypt(email);
+  const encrPassword = encrypt(password);
+  const newUser = userModel.create({ username: encrUsername, email: encrEmail, password: encrPassword, });
+  return newUser;
+};
 
+const findUser = async (username, userModel, passwordModel) => {
   const encrUsername = encrypt(username);
   const user = await userModel.findOne({ where: { username: encrUsername }, include: [ { model: passwordModel } ] });
 
@@ -30,5 +38,5 @@ const findUser = async (username, userModel, passwordModel) => {
 };
 
 module.exports = {
-  findUser
+  createUser, findUser
 };

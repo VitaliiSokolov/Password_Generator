@@ -27,7 +27,7 @@ class SignIn extends React.Component {
     const responseArray = await regValidate( login, password, email );
     this.setState({inputValidationLogin: responseArray[1], inputValidationEmail: responseArray[2], inputValidationPassword: responseArray[3]});
     if(responseArray[0].length < 1) {
-      await axios.post('/register', { username: login, email, password } )
+      await axios.post('/auth/register', { username: login, email, password } )
         .then( (res) => {
           console.log(res);
           this.setState({errorMessage: ''});
@@ -35,7 +35,7 @@ class SignIn extends React.Component {
           poppupElement.classList.add('active');
           const hidden = () => {
             poppupElement.classList.remove('active');
-            this.props.history.push('/login');
+            this.props.history.push('/auth/login');
           };
           setTimeout(hidden, 2500);
         })

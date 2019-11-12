@@ -1,5 +1,4 @@
-const Login = require('../routes/login');
-const Register = require('../routes/register');
+const { Register, Login } = require('../../routes/Auth');
 
 const Auth = async (server) => {
   try {

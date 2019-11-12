@@ -55,7 +55,7 @@ class Generator extends React.Component {
     if(!localToken){
       this.props.history.push('/home');
     }
-    await axios.get('/gen', { headers: { Authorization: localToken, username }} )
+    await axios.get('/user', { headers: { Authorization: localToken, username }} )
       .then( async (res) => {
         const user = res.data.user;
         if(user){
@@ -75,7 +75,7 @@ class Generator extends React.Component {
     const responseArray = await createPassValidation(title, value);
     this.setState({ createPopupMessage: responseArray[0] });
     if(responseArray[0].length < 1) {
-      await axios.post('/gen', { userId, title, value } )
+      await axios.post('/user/add-pass', { userId, title, value } )
         .then( (res) => {
           console.log(res);
           const newPassword = res.data.newPassword;

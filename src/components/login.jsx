@@ -31,7 +31,7 @@ class SignIn extends React.Component {
     const responseArray = await loginValidate(login, password);
     this.setState({ errorMessage: responseArray[0], logValidation: responseArray[1], passValidation: responseArray[2] });
     if(responseArray[0].length < 1) {
-      axios.post('/login', { username: login, password } )
+      axios.post('/auth/login', { username: login, password } )
         .then( (res) => {
           sessionStorage.setItem('token', res.data.token);
           sessionStorage.setItem('userId', res.data.user.id);
@@ -46,7 +46,7 @@ class SignIn extends React.Component {
             this.setState({ serverValidation: true });
           } else {
             this.setState({ serverValidation: false });
-            this.props.history.push('/gen');
+            this.props.history.push('/user');
           }
         })
         .catch((err) => {

@@ -1,5 +1,12 @@
 const {encrypt} = require('../utils/encrypter');
 
+const checkEmailLogin = (email, username, userModel)  => {
+  const cryptedEmail = encrypt(email);
+  const cryptedLogin = encrypt(username);
+  let user = userModel.findOne({where: {email: cryptedEmail, username: cryptedLogin}});
+  return user;
+};
+
 const login = async (body, userModel, passwordModel) => {
   const { username, password } = body;
   const cryptedPassword = encrypt(password);
@@ -9,5 +16,5 @@ const login = async (body, userModel, passwordModel) => {
 };
 
 module.exports = {
-  login
+  checkEmailLogin, login
 };

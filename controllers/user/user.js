@@ -1,8 +1,8 @@
-const getuser = require('../routes/getUser');
+const { initUser } = require('../../routes/User');
 
 const User = async (server) => {
   try {
-    await getuser(server);
+    await initUser(server);
   }
   catch(error) {
     console.log(error);
