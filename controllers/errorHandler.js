@@ -7,7 +7,7 @@ const ErrorHandler = (server) => {
     // else {
     //   next(err);
     // }
-    res.send({err});
+    next(err);
   });
 };
 

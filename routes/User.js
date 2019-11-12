@@ -1,4 +1,3 @@
-const { passwordModel, UserModel } = require('../models/index');
 const { findUser } = require('../services/userService');
 const { createPassword } = require('../services/passwordService');
 const exjwt = require('express-jwt');
@@ -11,7 +10,7 @@ const userRouter = (server) => {
   server.get('/user', jwtMW, async (req, res, next) => {
     try{
       const { username, key } = req.headers;
-      const user = await findUser(username, UserModel, passwordModel);
+      const user = await findUser(username);
       res.send({
         user,
         key
@@ -23,7 +22,7 @@ const userRouter = (server) => {
   // CREATE NEW PASSWORD
   server.post('/user/add-pass', async (req, res, next) => {
     try {
-      const newPassword = await createPassword(req.body, passwordModel);
+      const newPassword = await createPassword(req.body);
       if(newPassword){
         res.send({
           newPassword

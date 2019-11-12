@@ -11,4 +11,10 @@ const stage = new Sequelize('heroku_e149ee3e4502658', 'b815ad3a871eeb', 'a3f7580
   host: 'eu-cdbr-west-02.cleardb.net',
 });
 
+// //sync database
+// local.sync().then(result=>{
+//   console.log(result);
+// })
+//   .catch(err=> console.log(err));
+
 module.exports = { local, stage };

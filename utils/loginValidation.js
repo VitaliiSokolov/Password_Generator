@@ -6,7 +6,7 @@ const loginValidate = ( login, password ) => {
     login: joi.string().min(4).max(16).required(),
     password: joi.string().min(4).max(37).required(),
   });
-  let response = [ '', false, false, false];
+  let response = [ '', false, false ];
   joi.validate( data, schema, ( err ) => {
     if(err) {
       let formattedMessage = err.message;

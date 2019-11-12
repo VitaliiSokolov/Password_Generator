@@ -1,7 +1,7 @@
 const {INTEGER, STRING} = require('sequelize').Sequelize;
 const { local, stage } = require('../db/sequilize');
 
-const passwordModel = local.define('item', {
+const passwordModel = local.define('password', {
   id: {
     type: INTEGER,
     autoIncrement: true,

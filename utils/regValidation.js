@@ -23,7 +23,7 @@ const regValidate = ( login, password, email ) => {
         response[3] = true;
       }
     } else {
-      console.log('Error null');
+      console.log('Joi validate Error null');
     }
   });
   return response;
