@@ -1,9 +1,7 @@
 const { findUser } = require('../services/userService');
 const { createPassword } = require('../services/passwordService');
 const exjwt = require('express-jwt');
-const jwtMW = exjwt({
-  secret: 'keyboard cat 4 ever'
-});
+const jwtMW = exjwt({ secret: 'keyboard cat 4 ever' });
 
 const userRouter = (server) => {
   // GENERATOR'S VIEW ROUTE

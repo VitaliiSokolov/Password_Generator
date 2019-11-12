@@ -26,6 +26,4 @@ const findUser = async (username) => {
   return decryptedUser;
 };
 
-module.exports = {
-  createUser, findUser
-};
+module.exports = { createUser, findUser };

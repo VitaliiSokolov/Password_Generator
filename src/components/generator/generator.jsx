@@ -59,7 +59,7 @@ class Generator extends React.Component {
       .then( async (res) => {
         const user = res.data.user;
         if(user){
-          this.setState({ storeList: user.items, name: user.username });
+          this.setState({ storeList: user.passwords, name: user.username });
         }
         return;
       })
@@ -177,7 +177,7 @@ class Generator extends React.Component {
       <div className='generator'>
         <nav>
           <button className='myButtonSwitcher' onClick={ () => { this.setState({ ...this.state, storage: !storage, createPopup: false }); } } >{!storage? 'Storage' : 'Generator'}</button>
-          {storage? <button className={!createPopup? 'createShowBtn' : 'createShowBtn cansel'} onClick={ () => { this.setState({createPopup: !createPopup}); } } >
+          {storage? <button className={!createPopup? 'createShowBtn' : 'createShowBtn cansel'} onClick={ () => { this.setState({createPopup: !createPopup, createPopupMessage: '' }); } } >
             {!createPopup? 'Create' : 'Cancel'}   <i className='fa fa-plus-circle' aria-hidden='true'></i>
           </button> : null}
           <button className='copy logout myButtonLogout' onClick={ () => { this.logout(); } } >Logout</button>

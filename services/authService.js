@@ -1,10 +1,11 @@
 const {encrypt} = require('../utils/encrypter');
 const { UserModel, passwordModel } = require('../models');
-const {Op} = require('sequelize');
+const { Op } = require('sequelize');
 
 const checkEmailLogin = async (username, email)  => {
   console.log(UserModel);
   const user = await UserModel.findOne({where:{
+    // finding user with unic username AND email
     [Op.or]: [ {username}, {email} ]
   }});
   return user;
