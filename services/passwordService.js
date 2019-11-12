@@ -8,4 +8,18 @@ const createPassword = (body) => {
   return newPassword;
 };
 
-module.exports = { createPassword };
+const editPassword = (body) => {
+  const { id, title, value } = body;
+  const encryptedValue = encrypt(value);
+  const editedPassword = passwordModel.update( { title, value:encryptedValue }, { where: { id } , returning:true} );
+  return editedPassword;
+};
+
+const deletePassword = (body) => {
+  const { Id, title, value } = body;
+  const encryptedValue = encrypt(value);
+  const editedPassword = passwordModel.update( { title, value:encryptedValue }, { where: { id: Id } } );
+  return editedPassword;
+};
+
+module.exports = { createPassword, editPassword, deletePassword };

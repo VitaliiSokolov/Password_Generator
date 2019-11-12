@@ -11,10 +11,13 @@ class Generator extends React.Component {
     super(props);
     this.generate = this.generate.bind(this);
     this.onCopy = this.onCopy.bind(this);
+    this.edit = this.edit.bind(this);
     this.logout = this.logout.bind(this);
     this.popupRef = React.createRef();
     this.callBackendAPIGet = this.callBackendAPIGet.bind(this);
     this.callBackendAPIPost = this.callBackendAPIPost.bind(this);
+    // this.callBackendAPIPut = this.callBackendAPIPut.bind(this);
+    // УБРАТЬ ЛИШНИЕ БАЙНДЫ
     this.handleOnChangeMin = this.handleOnChangeMin.bind(this);
     this.handleOnChangeMax = this.handleOnChangeMax.bind(this);
     this.handleOnChangeSpecial = this.handleOnChangeSpecial.bind(this);
@@ -28,10 +31,12 @@ class Generator extends React.Component {
       result: '',
       min_max_err: '',
       createPopupMessage: '',
+      id: -1,
       min: 0,
       max: 0,
       passwords: [],
       storeList: [],
+      buttonMethodPost: false,
       copied: false,
       special: false,
       storage: true,
@@ -75,11 +80,30 @@ class Generator extends React.Component {
     const responseArray = await createPassValidation(title, value);
     this.setState({ createPopupMessage: responseArray[0] });
     if(responseArray[0].length < 1) {
-      await axios.post('/user/add-pass', { userId, title, value } )
+      await axios.post('/user/password/:id', { userId, title, value } )
         .then( (res) => {
-          console.log(res);
           const newPassword = res.data.newPassword;
           console.log('Created', newPassword);
+          this.setState({ createPopup: !createPopup });
+          this.callBackendAPIGet();
+          return;
+        })
+        .catch((err) => {
+          console.log(err);
+          return err;
+        });
+    }
+  }
+  // Edit password
+  callBackendAPIPut = async () => {
+    const { title, value, createPopup, id } = this.state;
+    const responseArray = await createPassValidation(title, value);
+    this.setState({ createPopupMessage: responseArray[0] });
+    if(responseArray[0].length < 1) {
+      await axios.put(`/user/password/:${id}`, { id, title, value } )
+        .then( (res) => {
+          const newPassword = res.data.newPassword;
+          console.log('Edited', newPassword);
           this.setState({ createPopup: !createPopup });
           this.callBackendAPIGet();
           return;
@@ -100,6 +124,10 @@ class Generator extends React.Component {
     };
     setTimeout(hidden, 500);
   };
+  // Edit password
+  edit = (id) => {
+    this.setState({createPopup: true, buttonMethodPost:false, id});
+  }
   // Generating password
   generate = async () => {
     const { min, max, special } = this.state;
@@ -172,12 +200,12 @@ class Generator extends React.Component {
   }
 
   render() {
-    const { result, passwords, special, storage, storeList, name, createPopup, min_max_err, createPopupMessage } = this.state;
+    const { result, passwords, special, storage, storeList, name, createPopup, min_max_err, createPopupMessage, buttonMethodPost } = this.state;
     return(
       <div className='generator'>
         <nav>
           <button className='myButtonSwitcher' onClick={ () => { this.setState({ ...this.state, storage: !storage, createPopup: false }); } } >{!storage? 'Storage' : 'Generator'}</button>
-          {storage? <button className={!createPopup? 'createShowBtn' : 'createShowBtn cansel'} onClick={ () => { this.setState({createPopup: !createPopup, createPopupMessage: '' }); } } >
+          {storage? <button className={!createPopup? 'createShowBtn' : 'createShowBtn cansel'} onClick={ () => { this.setState({createPopup: !createPopup, createPopupMessage: '', buttonMethodPost: true }); } } >
             {!createPopup? 'Create' : 'Cancel'}   <i className='fa fa-plus-circle' aria-hidden='true'></i>
           </button> : null}
           <button className='copy logout myButtonLogout' onClick={ () => { this.logout(); } } >Logout</button>
@@ -194,22 +222,29 @@ class Generator extends React.Component {
                   <input className='titleInput' type='text' placeholder='Title' onChange={ (e)=> {this.handleOnChangeTitle(e.target.value);} } />
                   <input className='valueInput' type='text' placeholder='Value' onChange={ (e)=> {this.handleOnChangeValue(e.target.value);} } />
                   <p className='createPopupMessage'>{createPopupMessage}</p>
-                  <button className='create myButtonGen' onClick={ () => { this.createPass(); } } >
+                  <button className='create myButtonGen' onClick={ () => {buttonMethodPost? this.callBackendAPIPost() : this.callBackendAPIPut(); } } >
                     Create   <i className='fa fa-plus-circle' aria-hidden='true'></i>
                   </button>
                 </div>
               </div>
               : null}
             <ul className='storeList' >
-              {storeList.map( (item, index) => {
-                return (<li className='profile' key={index}>
-                  <h3>{item.title} :</h3>
-                  <h5>{item.value}</h5>
-                  <CopyToClipboard onCopy={this.onCopy} text={item.value} >
+              {storeList.map( (item) => {
+                const { id, title, value } = item;
+                return (<li className='profile' key={id}>
+                  <h3>{title} :</h3>
+                  <h5>{value}</h5>
+                  <CopyToClipboard onCopy={this.onCopy} text={value} >
                     <button className='copy myButtonCopy listbutton' >
                       <i className='fa fa-clipboard' aria-hidden='true'></i>
                     </button>
                   </CopyToClipboard>
+                  <button className='copy myButtonCopy listbutton' onClick={ () => { this.edit(id); } } >
+                    <i className="fa fa-pencil-square" aria-hidden="true"></i>
+                  </button>
+                  <button className='copy myButtonCopy listbutton' onClick={ () => {  } } >
+                    <i className="fa fa-ban" aria-hidden="true"></i>
+                  </button>
                 </li>
                 );
               })}

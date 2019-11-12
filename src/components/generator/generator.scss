@@ -177,6 +177,22 @@
 	position:relative;
 	top:1px;
 }
+.profile button:nth-child(3) {
+  margin-right: 5px;
+}
+.profile button:nth-child(4) {
+  margin-right: 5px;
+  background-color: #44c767;
+}
+.profile button:nth-child(5) {
+  background-color: #f10606;
+}
+.profile button:nth-child(4):hover {
+	background-color:#5cbf2a;
+}
+.profile button:nth-child(5):hover {
+	background-color:#854629;
+}
 .listbutton{
   padding: 3px 6px;
   height: 25px;
@@ -252,6 +268,7 @@
   align-items: center;
   border-left: 3px solid #fff;
 }
+
 .create {
   margin-top: 15px;
   font-size: 15px;
@@ -300,8 +317,8 @@ nav {
   width: 80%;
   text-align: left;
 }
-.fa-clipboard {
-  color: #000;
+.fa{
+  color: #fff;
   font-size: 14px;
 }
 .createPopupWrapper{
