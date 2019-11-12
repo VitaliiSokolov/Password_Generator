@@ -3,8 +3,8 @@ const joi = require('joi');
 const loginValidate = ( login, password ) => {
   const data = { login, password };
   const schema = joi.object().keys({
-    login: joi.string().min(4).required(),
-    password: joi.string().min(4).required(),
+    login: joi.string().min(4).max(16).required(),
+    password: joi.string().min(4).max(37).required(),
   });
   let response = [ '', false, false, false];
   joi.validate( data, schema, ( err ) => {

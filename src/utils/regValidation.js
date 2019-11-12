@@ -3,9 +3,9 @@ const joi = require('joi');
 const regValidate = ( login, password, email ) => {
   const data = { login, password, email };
   const schema = joi.object().keys({
-    login: joi.string().min(4).required(),
+    login: joi.string().min(4).max(16).required(),
     email: joi.string().email().lowercase().required(),
-    password: joi.string().min(4).required(),
+    password: joi.string().min(4).max(37).required(),
   });
   let response = [ '', false, false, false];
   joi.validate( data, schema, ( err ) => {

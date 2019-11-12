@@ -3,8 +3,8 @@ const joi = require('joi');
 const createPassValidate = ( title, value ) => {
   const data = { title, value };
   const schema = joi.object().keys({
-    title: joi.string().min(1).required(),
-    value: joi.string().min(3).required(),
+    title: joi.string().min(1).max(16).required(),
+    value: joi.string().min(3).max(37).required(),
   });
   let response = [ '', false ];
   joi.validate( data, schema, ( err ) => {
