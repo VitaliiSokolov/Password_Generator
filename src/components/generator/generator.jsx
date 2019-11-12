@@ -3,8 +3,8 @@ import './generator.scss';
 import { withRouter } from 'react-router-dom';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 const axios = require('axios');
-const generating = require('../utils/generate');
-const createPassValidation = require('../utils/createPassValidation');
+const generating = require('../../utils/generate');
+const createPassValidation = require('../../utils/createPassValidation');
 
 class Generator extends React.Component {
   constructor(props) {

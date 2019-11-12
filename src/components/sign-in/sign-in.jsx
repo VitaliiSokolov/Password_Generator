@@ -2,7 +2,7 @@ import React from 'react';
 import './sign-in.scss';
 import { withRouter } from 'react-router-dom';
 const axios = require('axios');
-const regValidate = require('../utils/regValidation');
+const regValidate = require('../../utils/regValidation');
 
 class SignIn extends React.Component {
   constructor(props) {
@@ -25,7 +25,7 @@ class SignIn extends React.Component {
     e.preventDefault();
     const { login, password, email } = this.state;
     const responseArray = await regValidate( login, password, email );
-    this.setState({inputValidationLogin: responseArray[1], inputValidationEmail: responseArray[2], inputValidationPassword: responseArray[3]});
+    this.setState({errorMessage: responseArray[0], inputValidationLogin: responseArray[1], inputValidationEmail: responseArray[2], inputValidationPassword: responseArray[3]});
     if(responseArray[0].length < 1) {
       await axios.post('/auth/register', { username: login, email, password } )
         .then( (res) => {

@@ -4,7 +4,6 @@ const { createUser } = require('../services/userService');
 const generateToken = require('../utils/token');
 
 const Auth = (server) => {
-
   // REGISTRATION ROUTE
   server.post('/auth/register', async (req, res, next) => {
     try{
@@ -33,7 +32,6 @@ const Auth = (server) => {
       next(e);
     }
   });
-
   // LOGIN ROUTE
   server.post('/auth/login', async (req, res, next) => {
     try {

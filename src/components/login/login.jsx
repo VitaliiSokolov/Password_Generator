@@ -2,7 +2,7 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import './login.scss';
 const axios = require('axios');
-const loginValidate = require('../utils/loginValidation');
+const loginValidate = require('../../utils/loginValidation');
 class SignIn extends React.Component {
   constructor(props) {
     super(props);
@@ -40,7 +40,7 @@ class SignIn extends React.Component {
           this.props.parentCallback(true);
           let data = res.config.data;
           data = JSON.parse(data);
-          this.setState({ name: data.username });
+          this.setState({ name: data.username, errorMessage: ''});
           this.props.parentCallbackUsername(this.state.name);
           if(res.data.token === null){
             this.setState({ serverValidation: true });

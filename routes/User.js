@@ -1,14 +1,12 @@
 const { passwordModel, UserModel } = require('../models/index');
 const { findUser } = require('../services/userService');
 const { createPassword } = require('../services/passwordService');
-const errorHandler = require('../controllers/errorHadler/errorHandler');
 const exjwt = require('express-jwt');
 const jwtMW = exjwt({
   secret: 'keyboard cat 4 ever'
 });
 
 const userRouter = (server) => {
-
   // GENERATOR'S VIEW ROUTE
   server.get('/user', jwtMW, async (req, res, next) => {
     try{
@@ -22,7 +20,6 @@ const userRouter = (server) => {
       next(e);
     }
   });
-
   // CREATE NEW PASSWORD
   server.post('/user/add-pass', async (req, res, next) => {
     try {

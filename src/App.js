@@ -8,9 +8,9 @@ import {
 import { Redirect } from 'react-router';
 import './App.css';
 import logo from './vs.svg';
-import Generator from './components/generator';
-import SignIn from './components/sign-in';
-import Login from './components/login';
+import Generator from './components/generator/generator';
+import SignIn from './components/sign-in/sign-in';
+import Login from './components/login/login';
 import Error from './components/error';
 class App extends React.Component {
   constructor(props) {
