@@ -5,5 +5,4 @@ const sender = ([a,b,c], status) => {
 
 sender();
 
-
 module.exports= sender;

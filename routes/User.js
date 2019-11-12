@@ -1,7 +1,7 @@
 const { passwordModel, UserModel } = require('../models/index');
 const { findUser } = require('../services/userService');
 const { createPassword } = require('../services/passwordService');
-const errorHandler = require('../controllers/errorHandler');
+const errorHandler = require('../controllers/errorHadler/errorHandler');
 const exjwt = require('express-jwt');
 const jwtMW = exjwt({
   secret: 'keyboard cat 4 ever'
