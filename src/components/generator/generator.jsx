@@ -5,8 +5,6 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 const axios = require('axios');
 const generating = require('../../utils/generate');
 const createPassValidation = require('../../utils/createPassValidation');
-const jwt = require('jsonwebtoken');
-
 
 class Generator extends React.Component {
   constructor(props) {

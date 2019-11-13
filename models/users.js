@@ -1,7 +1,10 @@
 const {INTEGER, STRING} = require('sequelize').Sequelize;
-const { local, stage } = require('../db/sequilize');
+const {
+  // local,
+  stage
+} = require('../db/sequilize');
 
-const UserModel = local.define('user', {
+const UserModel = stage.define('user', {
   id: {
     type: INTEGER,
     autoIncrement: true,
