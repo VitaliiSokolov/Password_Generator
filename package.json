@@ -21,6 +21,7 @@
     "simple-crypto-js": "^2.2.0"
   },
   "scripts": {
+    "heroku-postbuild": "npm run build",
     "prestart": "npm run build",
     "start": "npm install && node server.js",
     "startback": "nodemon server.js",
