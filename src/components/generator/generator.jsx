@@ -58,13 +58,13 @@ class Generator extends React.Component {
       })
       .catch((err) => {
         console.log(err.message);
-        const x = err.message.split('with');
-        if(x[1] === ' status code 401'){
-          this.MyLogoutFunction();
-        }
-        else {
-          return err;
-        }
+        // const x = err.message.split('with');
+        // if(x[1] === ' status code 401'){
+        this.MyLogoutFunction();
+        // }
+        // else {
+        // return err;
+        // }
       });
   };
   // Record new password
