@@ -4,6 +4,8 @@
   "private": true,
   "dependencies": {
     "axios": "^0.19.0",
+    "express": "^4.17.1",
+    "express-jwt": "^5.3.1",
     "jsonwebtoken": "^8.5.1",
     "crypto": "^1.0.1",
     "eslint-config-react-app": "^5.0.2",
@@ -19,7 +21,8 @@
     "simple-crypto-js": "^2.2.0"
   },
   "scripts": {
-    "start": "npm install && npm install jsonwebtoken && node server.js && npm run build",
+    "prestart": "npm run build",
+    "start": "npm install && node server.js",
     "startback": "nodemon server.js",
     "startfront": "react-scripts start",
     "build": "react-scripts build",
