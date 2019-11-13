@@ -23,7 +23,7 @@
   "scripts": {
     // "heroku-postbuild": "npm run build",
     // "prestart": "npm run build",
-    "start": "npm install && npm run build && node server.js",
+    "start": "npm install && node server.js && npm run build ",
     "startback": "nodemon server.js",
     "startfront": "react-scripts start",
     "build": "react-scripts build",
