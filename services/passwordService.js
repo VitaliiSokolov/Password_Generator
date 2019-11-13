@@ -8,17 +8,15 @@ const createPassword = (body) => {
   return newPassword;
 };
 
-const editPassword = (body) => {
-  const { id, title, value } = body;
+const editPassword = (id, body) => {
+  const { title, value } = body;
   const encryptedValue = encrypt(value);
   const editedPassword = passwordModel.update( { title, value:encryptedValue }, { where: { id } , returning:true} );
   return editedPassword;
 };
 
-const deletePassword = (body) => {
-  const { Id, title, value } = body;
-  const encryptedValue = encrypt(value);
-  const editedPassword = passwordModel.update( { title, value:encryptedValue }, { where: { id: Id } } );
+const deletePassword = (id) => {
+  const editedPassword = passwordModel.destroy({ where: { id } } );
   return editedPassword;
 };
 

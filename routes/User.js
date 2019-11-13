@@ -32,11 +32,10 @@ const userRouter = (server) => {
   });
   // EDIT PASSWORD
   server.put('/user/password/:id', async (req, res, next) => {
-    const {id} = req.params;
-    console.log(id);
-
+    const ID = req.params.id.split(':');
+    console.log(ID, ': Terget');
     try {
-      const newPassword = await editPassword(req.body);
+      const newPassword = await editPassword(ID[1], req.body);
       if(newPassword){
         res.send({
           newPassword
@@ -48,8 +47,10 @@ const userRouter = (server) => {
   });
   // DELETE PASSWORD
   server.delete('/user/password/:id', async (req, res, next) => {
+    const ID = req.params.id.split(':');
+    console.log(ID, ': Terget');
     try {
-      const newPassword = await deletePassword(req.body);
+      const newPassword = await deletePassword( ID[1] );
       if(newPassword){
         res.send({
           newPassword

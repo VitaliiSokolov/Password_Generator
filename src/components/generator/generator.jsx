@@ -5,27 +5,15 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 const axios = require('axios');
 const generating = require('../../utils/generate');
 const createPassValidation = require('../../utils/createPassValidation');
+const jwt = require('jsonwebtoken');
+
 
 class Generator extends React.Component {
   constructor(props) {
     super(props);
-    this.generate = this.generate.bind(this);
-    this.onCopy = this.onCopy.bind(this);
-    this.edit = this.edit.bind(this);
-    this.logout = this.logout.bind(this);
     this.popupRef = React.createRef();
-    this.callBackendAPIGet = this.callBackendAPIGet.bind(this);
-    this.callBackendAPIPost = this.callBackendAPIPost.bind(this);
-    // this.callBackendAPIPut = this.callBackendAPIPut.bind(this);
-    // УБРАТЬ ЛИШНИЕ БАЙНДЫ
-    this.handleOnChangeMin = this.handleOnChangeMin.bind(this);
-    this.handleOnChangeMax = this.handleOnChangeMax.bind(this);
-    this.handleOnChangeSpecial = this.handleOnChangeSpecial.bind(this);
-    this.handleOnChangeTitle = this.handleOnChangeTitle.bind(this);
-    this.handleOnChangeValue = this.handleOnChangeValue.bind(this);
-    this.createPass = this.createPass.bind(this);
     this.state = {
-      name: 'User',
+      name: 'my Friend!',
       title: '',
       value: '',
       result: '',
@@ -45,13 +33,15 @@ class Generator extends React.Component {
     };
   }
   async componentDidMount(){
-    const localToken = await sessionStorage.getItem('token');
-    if(!localToken && this.state.reload === true ){
-      console.log('redirect to /home');
-      this.props.history.push('/home');
-    }
     await this.callBackendAPIGet();
   }
+  // My TokenExpired Logout Function
+  MyLogoutFunction = () => {
+    setTimeout( () => {
+      alert('Your session-token was expired or You are not authorizated!');
+      this.logout();
+    }, 500);
+  };
   // GetUser
   callBackendAPIGet = async () => {
     let localToken = await sessionStorage.getItem('token');
@@ -69,8 +59,14 @@ class Generator extends React.Component {
         return;
       })
       .catch((err) => {
-        console.log(err);
-        return err;
+        console.log(err.message);
+        const x = err.message.split('with');
+        if(x[1] === ' status code 401'){
+          this.MyLogoutFunction();
+        }
+        else {
+          return err;
+        }
       });
   };
   // Record new password
@@ -102,8 +98,7 @@ class Generator extends React.Component {
     if(responseArray[0].length < 1) {
       await axios.put(`/user/password/:${id}`, { id, title, value } )
         .then( (res) => {
-          const newPassword = res.data.newPassword;
-          console.log('Edited', newPassword);
+          console.log('Edited id: ', res.data.newPassword[1]);
           this.setState({ createPopup: !createPopup });
           this.callBackendAPIGet();
           return;
@@ -113,6 +108,20 @@ class Generator extends React.Component {
           return err;
         });
     }
+  }
+  callBackendAPIDelete = async (id) => {
+    console.log(id);
+    await axios.delete(`/user/password/:${id}`, { id } )
+      .then( (res) => {
+        const newPassword = res.data.newPassword;
+        console.log('Deleted', newPassword);
+        this.callBackendAPIGet();
+        return;
+      })
+      .catch((err) => {
+        console.log(err);
+        return err;
+      });
   }
   // React-Copy-to-Clipboard
   onCopy = () => {
@@ -242,7 +251,7 @@ class Generator extends React.Component {
                   <button className='copy myButtonCopy listbutton' onClick={ () => { this.edit(id); } } >
                     <i className="fa fa-pencil-square" aria-hidden="true"></i>
                   </button>
-                  <button className='copy myButtonCopy listbutton' onClick={ () => {  } } >
+                  <button className='copy myButtonCopy listbutton' onClick={ () => { this.callBackendAPIDelete(id); } } >
                     <i className="fa fa-ban" aria-hidden="true"></i>
                   </button>
                 </li>
