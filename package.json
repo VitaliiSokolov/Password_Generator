@@ -18,7 +18,7 @@
     "simple-crypto-js": "^2.2.0"
   },
   "scripts": {
-    "start": " npm install && node server.js && npm run build",
+    "start": "npm install && npm install jsonwebtoken && node server.js && npm run build",
     "startback": "nodemon server.js",
     "startfront": "react-scripts start",
     "build": "react-scripts build",
